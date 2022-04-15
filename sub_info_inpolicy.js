@@ -41,7 +41,7 @@ $task.fetch(myRequest).then(response => {
 
 
 
-const url = "https://mojie.info/api/v1/client/subscribe?token=80af2d271df8a226003af6121ba664dc";
+const url = "c";
 const method = "HEAD";
 
 const myRequest = {
