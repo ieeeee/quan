@@ -72,7 +72,7 @@ Promise.all(promises).then((result) => {
                     //屏幕可展示100% 的点数为73点.
                     let dotCount = (percent_remainder * 50) / 100;
                     for (let i = 0; i < dotCount; i++) {
-                        tag.push(`.`);
+                        tag.push(`⋆`);
                     }
                     tag.push(` ${percent_remainder.toFixed(2)}%`);
                     break;
