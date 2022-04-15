@@ -57,11 +57,13 @@ Promise.all(promises).then((result) => {
             );
 
             let tag = [];
-            tag.push(response.tag);
+            let separator = ' • ';
+            tag.push(response.tag + '➤ ');
 
             response.style = response.style || 'text';
             switch (response.style) {
                 case "percent":
+                    separator = '';
                     //用量÷总量×100=百分比
                     let amounts = tmp.download + tmp.upload;
                     let total = tmp.total;
@@ -72,7 +74,7 @@ Promise.all(promises).then((result) => {
                     for (let i = 0; i < dotCount; i++) {
                         tag.push(`.`);
                     }
-                    tag.push(`${percent_remainder}%`);
+                    tag.push(` ${percent_remainder}%`);
                     break;
                 default:
                     tag.push(`↑${bytesToSize(tmp.upload)}`);
@@ -91,7 +93,7 @@ Promise.all(promises).then((result) => {
             //······················
             //⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆
 
-            myResponseList.push(`http=hello:80, username=name, password=pwd, fast-open=false, udp-relay=false, tag=${tag.join(' • ')}`);
+            myResponseList.push(`http=hello:80, username=name, password=pwd, fast-open=false, udp-relay=false, tag=${tag.join(separator)}`);
         }
     }
 
