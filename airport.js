@@ -1,92 +1,69 @@
-/**
- * 构建出多个异步请求（每个异步请求都应该是一个Promise对象）
- */
 
 const Base64 = new Base64Code();
 
-const url = "";
-const method = "HEAD";
+/*
+ariport format:
+[{'tag':'xx','url':'http://xxx'},{'tag':'xx','url':'http://xxx'}]
+*/
+let ariport = [];
 
-const myRequest = {
-    url: url,
-    method: method, // Optional, default GET.
-};
+/**
+ * 构建出多个异步请求（每个异步请求都应该是一个Promise对象）
+ */
+const promises = ariport.map((item) => {
 
-const myResponseList = [];
-const myResponse = {
-    status: "HTTP/1.1 200 OK",
-    headers: { "Connection": "Close", "Content-Type": "text/html; charset=UTF-8" }
-};
+    console.log(`[${item.tag}]用量信息查询中...`);
 
-let p1 = $task.fetch(myRequest).then(resp => {
+    const myRequest = {
+        url: item.url,
+        method: "HEAD"
+    };
 
-    let header = Object.keys(resp.headers).find(
-        (key) => key.toLowerCase() === "subscription-userinfo"
-    );
-    if (header) {
-
-        return resp.headers[header]
-    }
-
-    console.log(JSON.stringify(resp.headers));
-    return "A";
-}, reason => {
-
+    // 执行异步请求，返回一个 Promise 对象
+    return $task.fetch(myRequest).then(resp => {
+        let header = Object.keys(resp.headers).find((key) => key.toLowerCase() === "subscription-userinfo");
+        if (header) {
+            return { 'tag': item.tag, 'amounts': resp.headers[header] };
+        }
+        else {
+            return null;
+        }
+    }, reason => {
+        return null;
+    });
 });
 
-myRequest.url = "";
-let p2 = $task.fetch(myRequest).then(resp => {
+Promise.all(promises).then((result) => {
 
-    let header = Object.keys(resp.headers).find(
-        (key) => key.toLowerCase() === "subscription-userinfo"
-    );
-    if (header) {
-        return resp.headers[header]
-    }
+    const myResponseList = [];
+    const myResponse = {
+        status: "HTTP/1.1 200 OK",
+        headers: { "Connection": "Close", "Content-Type": "text/html; charset=UTF-8" }
+    };
 
-    console.log(JSON.stringify(resp.headers));
-    return "B";
-}, reason => {
-});
-
-
-Promise.all([p1, p2]).then((result) => {
-
+    // 遍历所有请求的响应结果
     for (let response of result) {
-        // 遍历所有请求的响应结果
 
         let tmp = Object.fromEntries(
-            response
+            response.amounts
                 .match(/\w+=[\d.eE+]+/g)
                 .map((item) => item.split("="))
                 .map(([k, v]) => [k, Number(v)])
         );
 
-        //console.log(JSON.stringify(tmp));
-
         let tag = [];
-        tag.push(`机场1`);
+        tag.push(response.tag);
 
         //tag.push(`${bytesToSize(tmp.upload)}`);
-
         //tag.push(`${bytesToSize(tmp.download)}`);
 
         tag.push(`${bytesToSize(tmp.download + tmp.upload)}`);
-
         tag.push(`${bytesToSize(tmp.total)}`);
 
-        //console.log(tag.join('|'));
         myResponseList.push(`http=hello:80, username=name, password=pwd, fast-open=false, udp-relay=false, tag=${tag.join('|')}`);
-
     }
 
-    let s1 = Base64.encode(myResponseList.join('\n'));
-    let s2 = Base64.decode(s1);
-
-    //console.log(s2);
-
-    myResponse.body = s1;
-
+    myResponse.body = Base64.encode(myResponseList.join('\n'));
     $done(myResponse);
 
 }).catch((error) => {
