@@ -74,7 +74,7 @@ Promise.all(promises).then((result) => {
                     for (let i = 0; i < dotCount; i++) {
                         tag.push(`.`);
                     }
-                    tag.push(` ${percent_remainder}%`);
+                    tag.push(` ${percent_remainder.toFixed(2)}%`);
                     break;
                 default:
                     tag.push(`↑${bytesToSize(tmp.upload)}`);
