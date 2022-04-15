@@ -30,7 +30,7 @@ const promises = ariport.map((item) => {
     // 执行异步请求，返回一个 Promise 对象
     return $task.fetch(myRequest).then(resp => {
         let header = Object.keys(resp.headers).find((key) => key.toLowerCase() === "subscription-userinfo");
-        return { 'tag': item.tag, 'amounts': (header) ? resp.headers[header] : null };
+        return { 'tag': item.tag, 'style': item.style, 'amounts': (header) ? resp.headers[header] : null };
     }, reason => {
         console.log(`[${item.tag}]获取用量信息异常...`);
         return null;
