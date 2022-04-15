@@ -12,6 +12,7 @@ ariport format:
 */
 const ariport_config_key = "ariport_amounts_config_key";
 const ariportValue = $prefs.valueForKey(ariport_config_key) || "";
+console.log(`ariport_config_key:${ariportValue}`);
 
 /**
  * 构建出多个异步请求（每个异步请求都应该是一个Promise对象）
