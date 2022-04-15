@@ -59,11 +59,13 @@ Promise.all(promises).then((result) => {
             let tag = [];
             tag.push(response.tag);
 
-            //tag.push(`${bytesToSize(tmp.upload)}`);
-            //tag.push(`${bytesToSize(tmp.download)}`);
+            tag.push(` ↑${bytesToSize(tmp.upload)}`);
+            tag.push(` ↓${bytesToSize(tmp.download)}`);
 
-            tag.push(`${bytesToSize(tmp.download + tmp.upload)}`);
-            tag.push(`${bytesToSize(tmp.total)}`);
+            tag.push(` ${bytesToSize(tmp.total - (tmp.download + tmp.upload))}`);
+            //tag.push(`${bytesToSize(tmp.total)}`);
+
+            //机场A|  
 
             myResponseList.push(`http=hello:80, username=name, password=pwd, fast-open=false, udp-relay=false, tag=${tag.join('|')}`);
         }
