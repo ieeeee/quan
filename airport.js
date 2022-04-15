@@ -65,9 +65,9 @@ Promise.all(promises).then((result) => {
             tag.push(`${bytesToSize(tmp.total - (tmp.download + tmp.upload))}`);
             //tag.push(`${bytesToSize(tmp.total)}`);
 
-            //魔戒•↑12.91MB•↓12.91MB•11.02GB ☠︎ ⌘ ● ☛ ➤
+            //魔戒•↑12.91MB•↓12.91MB•11.02GB • ☠︎ ⌘ ● ☛ ➤
 
-            myResponseList.push(`http=hello:80, username=name, password=pwd, fast-open=false, udp-relay=false, tag=${tag.join('➤')}`);
+            myResponseList.push(`http=hello:80, username=name, password=pwd, fast-open=false, udp-relay=false, tag=${tag.join(' • ')}`);
         }
     }
 
