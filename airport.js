@@ -59,13 +59,37 @@ Promise.all(promises).then((result) => {
             let tag = [];
             tag.push(response.tag);
 
-            tag.push(`↑${bytesToSize(tmp.upload)}`);
-            tag.push(`↓${bytesToSize(tmp.download)}`);
+            response.style = response.style || 'text';
+            switch (response.style) {
+                case "percent":
+                    //用量÷总量×100=百分比
+                    let amounts = tmp.download + tmp.upload;
+                    let total = tmp.total;
+                    let percent_amounts = (amounts / total) * 100;
+                    let percent_remainder = 100 - percent_amounts;
+                    //屏幕可展示100% 的点数为73点.
+                    let dotCount = (percent_remainder * 70) / 100;
+                    for (let i = 0; i < dotCount; i++) {
+                        tag.push(`.`);
+                    }
+                    tag.push(`${percent_remainder}%`);
+                    break;
+                default:
+                    tag.push(`↑${bytesToSize(tmp.upload)}`);
+                    tag.push(`↓${bytesToSize(tmp.download)}`);
+                    tag.push(`${bytesToSize(tmp.total - (tmp.download + tmp.upload))}`);
+                    //tag.push(`${bytesToSize(tmp.total)}`);
+                    break;
+            }
 
-            tag.push(`${bytesToSize(tmp.total - (tmp.download + tmp.upload))}`);
-            //tag.push(`${bytesToSize(tmp.total)}`);
-
-            //魔戒•↑12.91MB•↓12.91MB•11.02GB • ☠︎ ⌘ ● ☛ ➤
+            //魔戒•↑12.91MB•↓12.91MB•11.02GB • ☠︎ ⌘ ● ☛ ➤  
+            //∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙
+            //⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃
+            //▪︎▪︎▪︎▪︎▪︎▪︎▪︎▪︎▪︎▪︎▪︎▪︎▪︎▪︎▪︎▪︎▪︎▪︎▪︎▪︎▪︎▪︎
+            //......................
+            //₋₋₋₋₋₋₋₋₋₋₋₋₋₋₋₋₋₋₋₋₋₋
+            //······················
+            //⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆
 
             myResponseList.push(`http=hello:80, username=name, password=pwd, fast-open=false, udp-relay=false, tag=${tag.join(' • ')}`);
         }
