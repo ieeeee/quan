@@ -2,14 +2,21 @@
 const Base64 = new Base64Code();
 
 /*
+The $prefs is for persistent store: 
+$prefs.valueForKey(key)
+$prefs.setValueForKey(value, key)
+$prefs.removeValueForKey(key)
+$prefs.removeAllValues()
 ariport format:
 [{'tag':'xx','url':'http://xxx'},{'tag':'xx','url':'http://xxx'}]
 */
-let ariport = [];
+const ariport_config_key = "ariport_amounts_config_key";
+const ariportValue = $prefs.valueForKey(ariport_config_key) || "";
 
 /**
  * 构建出多个异步请求（每个异步请求都应该是一个Promise对象）
  */
+const ariport = JSON.parse(ariportValue) || [];
 const promises = ariport.map((item) => {
 
     console.log(`[${item.tag}]用量信息查询中...`);
