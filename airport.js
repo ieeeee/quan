@@ -2,7 +2,7 @@
  * 构建出多个异步请求（每个异步请求都应该是一个Promise对象）
  */
 
-const Base64=new Base64Code();
+const Base64 = new Base64Code();
 
 const url = "";
 const method = "HEAD";
@@ -12,115 +12,103 @@ const myRequest = {
     method: method, // Optional, default GET.
 };
 
-const myResponseList =[];
+const myResponseList = [];
 const myResponse = {
     status: "HTTP/1.1 200 OK",
-    headers: {"Connection": "Close","Content-Type":"text/html; charset=UTF-8"}
+    headers: { "Connection": "Close", "Content-Type": "text/html; charset=UTF-8" }
 };
 
 let p1 = $task.fetch(myRequest).then(resp => {
 
-let header = Object.keys(resp.headers).find(
+    let header = Object.keys(resp.headers).find(
         (key) => key.toLowerCase() === "subscription-userinfo"
-      );
-      if (header) {
-      
+    );
+    if (header) {
+
         return resp.headers[header]
-      }
+    }
 
-
-
-console.log(JSON.stringify(resp.headers));
-return "A";
+    console.log(JSON.stringify(resp.headers));
+    return "A";
 }, reason => {
 
 });
 
 myRequest.url = "";
+let p2 = $task.fetch(myRequest).then(resp => {
 
-let p2 =  $task.fetch(myRequest).then(resp => {
-
-let header = Object.keys(resp.headers).find(
+    let header = Object.keys(resp.headers).find(
         (key) => key.toLowerCase() === "subscription-userinfo"
-      );
-      if (header) {
-      
+    );
+    if (header) {
         return resp.headers[header]
-      }
+    }
 
-
-console.log(JSON.stringify(resp.headers));
-return "B";
+    console.log(JSON.stringify(resp.headers));
+    return "B";
 }, reason => {
 });
 
 
 Promise.all([p1, p2]).then((result) => {
 
-/* 
+    for (let response of result) {
+        // 遍历所有请求的响应结果
 
+        let tmp = Object.fromEntries(
+            response
+                .match(/\w+=[\d.eE+]+/g)
+                .map((item) => item.split("="))
+                .map(([k, v]) => [k, Number(v)])
+        );
 
-*/
+        //console.log(JSON.stringify(tmp));
 
-for (let response of result){
-		// 遍历所有请求的响应结果
+        let tag = [];
+        tag.push(`机场1`);
 
-let tmp = Object.fromEntries(
-    response
-      .match(/\w+=[\d.eE+]+/g)
-      .map((item) => item.split("="))
-      .map(([k, v]) => [k, Number(v)])
-  );
+        //tag.push(`${bytesToSize(tmp.upload)}`);
 
-//console.log(JSON.stringify(tmp));
+        //tag.push(`${bytesToSize(tmp.download)}`);
 
-		let tag = [];
-tag.push(`机场1`);
+        tag.push(`${bytesToSize(tmp.download + tmp.upload)}`);
 
-//tag.push(`${bytesToSize(tmp.upload)}`);
+        tag.push(`${bytesToSize(tmp.total)}`);
 
-//tag.push(`${bytesToSize(tmp.download)}`);
+        //console.log(tag.join('|'));
+        myResponseList.push(`http=hello:80, username=name, password=pwd, fast-open=false, udp-relay=false, tag=${tag.join('|')}`);
 
-tag.push(`${bytesToSize(tmp.download+tmp.upload)}`);
+    }
 
-tag.push(`${bytesToSize(tmp.total)}`);
+    let s1 = Base64.encode(myResponseList.join('\n'));
+    let s2 = Base64.decode(s1);
 
-	//console.log(tag.join('|'));
-	myResponseList.push(`http=hello:80, username=name, password=pwd, fast-open=false, udp-relay=false, tag=${tag.join('|')}`);
+    //console.log(s2);
 
-}
+    myResponse.body = s1;
 
-let s1=Base64.encode(myResponseList.join('\n'));
+    $done(myResponse);
 
-let s2 = Base64.decode(s1);
-
-  console.log(s2);
-myResponse.body = s1;
-
-$done(myResponse);
- // $done();
 }).catch((error) => {
-  console.log(error)
-  $done();
+    console.log(error)
+    $done();
 });
 
 function bytesToSize(bytes) {
-  if (bytes === 0) return "0B";
-  let k = 1024;
-  sizes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
-  let i = Math.floor(Math.log(bytes) / Math.log(k));
-  return (bytes / Math.pow(k, i)).toFixed(2) + " " + sizes[i];
+    if (bytes === 0) return "0B";
+    let k = 1024;
+    sizes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+    let i = Math.floor(Math.log(bytes) / Math.log(k));
+    return (bytes / Math.pow(k, i)).toFixed(2) + " " + sizes[i];
 }
 
 function formatTime(time) {
-  let dateObj = new Date(time);
-  let year = dateObj.getFullYear();
-  let month = dateObj.getMonth() + 1;
-  let day = dateObj.getDate();
-  return year + "年" + month + "月" + day + "日";
+    let dateObj = new Date(time);
+    let year = dateObj.getFullYear();
+    let month = dateObj.getMonth() + 1;
+    let day = dateObj.getDate();
+    return year + "年" + month + "月" + day + "日";
 }
-
-
 
 //比较完美的一款 base64 encode/decode 工具
 /*

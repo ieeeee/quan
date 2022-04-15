@@ -53,35 +53,35 @@ const myRequest = {
 $task.fetch(myRequest).then(response => {
     // response.statusCode, response.headers, response.body
 
-   //console.log(JSON.stringify(response));
+    //console.log(JSON.stringify(response));
 
-   // $notify("Title", "Subtitle", ''); // Success!
+    // $notify("Title", "Subtitle", ''); // Success!
     //$done();
 
-//shadowsocks=k3.7hh7.xyz:41321, method=aes-128-gcm, password=b92946d49005, obfs=http, obfs-host=6573767766736d733a627775.sina.cn, tag=v1|亚洲03|MPTCP|★★☆
+    //shadowsocks=k3.7hh7.xyz:41321, method=aes-128-gcm, password=b92946d49005, obfs=http, obfs-host=6573767766736d733a627775.sina.cn, tag=v1|亚洲03|MPTCP|★★☆
 
-/*{"statusCode":200,"headers":{"Server":"nginx","Content-Type":"application/octet-stream; charset=utf-8","Subscription-Userinfo":"upload=4595409; download=10966755; total=16106127360; expire=1676048405","Connection":"keep-alive","Date":"Fri, 15 Apr 2022 01:20:21 GMT","Content-Disposition":"attachment; filename=QuantumultX_1649985621.txt","Content-Length":"7847","Cache-Control":"no-store, no-cache, must-revalidate","X-Cache-Status":"MISS"}}*/
-
-
-//vmess=gtm.mj-cn.cyou:16617,method=chacha20-poly1305,password=d83dae3e-c0ec-4aa2-9336-67ae5dd7d04c,fast-open=true,udp-relay=true,tag=日本-智能,obfs=ws
+    /*{"statusCode":200,"headers":{"Server":"nginx","Content-Type":"application/octet-stream; charset=utf-8","Subscription-Userinfo":"upload=4595409; download=10966755; total=16106127360; expire=1676048405","Connection":"keep-alive","Date":"Fri, 15 Apr 2022 01:20:21 GMT","Content-Disposition":"attachment; filename=QuantumultX_1649985621.txt","Content-Length":"7847","Cache-Control":"no-store, no-cache, must-revalidate","X-Cache-Status":"MISS"}}*/
 
 
-//http=hello:80, username=name, password=pwd, fast-open=false, udp-relay=false, tag=DISABLED-PROXY
-const Base64=new Base64Code();
+    //vmess=gtm.mj-cn.cyou:16617,method=chacha20-poly1305,password=d83dae3e-c0ec-4aa2-9336-67ae5dd7d04c,fast-open=true,udp-relay=true,tag=日本-智能,obfs=ws
 
 
-
-const myResponse = {
-    status: "HTTP/1.1 200 OK",
-    headers: {"Subscription-Userinfo":response.headers["subscription-userinfo"],"Connection": "Close","Content-Type":"text/html; charset=UTF-8"},
-    body:Base64.encode("vmess=gtm.mj-cn.cyou:16617,method=chacha20-poly1305,password=d83dae3e-c0ec-4aa2-9336-67ae5dd7d04c,fast-open=true,udp-relay=true,tag=日本-智能,obfs=ws")
-};
+    //http=hello:80, username=name, password=pwd, fast-open=false, udp-relay=false, tag=DISABLED-PROXY
+    const Base64 = new Base64Code();
 
 
 
-console.log(Base64.decode(myResponse.body));
+    const myResponse = {
+        status: "HTTP/1.1 200 OK",
+        headers: { "Subscription-Userinfo": response.headers["subscription-userinfo"], "Connection": "Close", "Content-Type": "text/html; charset=UTF-8" },
+        body: Base64.encode("vmess=gtm.mj-cn.cyou:16617,method=chacha20-poly1305,password=d83dae3e-c0ec-4aa2-9336-67ae5dd7d04c,fast-open=true,udp-relay=true,tag=日本-智能,obfs=ws")
+    };
 
-$done(myResponse);
+
+
+    console.log(Base64.decode(myResponse.body));
+
+    $done(myResponse);
 
 
 
