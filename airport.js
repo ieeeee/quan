@@ -22,53 +22,51 @@ const promises = ariport.map((item) => {
     // 执行异步请求，返回一个 Promise 对象
     return $task.fetch(myRequest).then(resp => {
         let header = Object.keys(resp.headers).find((key) => key.toLowerCase() === "subscription-userinfo");
-        if (header) {
-            return { 'tag': item.tag, 'amounts': resp.headers[header] };
-        }
-        else {
-            return null;
-        }
+        return { 'tag': item.tag, 'amounts': (header) ? resp.headers[header] : null };
     }, reason => {
+        console.log(`[${item.tag}]获取用量信息异常...`);
         return null;
     });
 });
 
+const myResponse = {
+    status: "HTTP/1.1 200 OK",
+    headers: { "Connection": "Close", "Content-Type": "text/html; charset=UTF-8" }
+};
+
 Promise.all(promises).then((result) => {
 
     const myResponseList = [];
-    const myResponse = {
-        status: "HTTP/1.1 200 OK",
-        headers: { "Connection": "Close", "Content-Type": "text/html; charset=UTF-8" }
-    };
 
     // 遍历所有请求的响应结果
     for (let response of result) {
+        if (response) {
+            let tmp = Object.fromEntries(
+                response.amounts
+                    .match(/\w+=[\d.eE+]+/g)
+                    .map((item) => item.split("="))
+                    .map(([k, v]) => [k, Number(v)])
+            );
 
-        let tmp = Object.fromEntries(
-            response.amounts
-                .match(/\w+=[\d.eE+]+/g)
-                .map((item) => item.split("="))
-                .map(([k, v]) => [k, Number(v)])
-        );
+            let tag = [];
+            tag.push(response.tag);
 
-        let tag = [];
-        tag.push(response.tag);
+            //tag.push(`${bytesToSize(tmp.upload)}`);
+            //tag.push(`${bytesToSize(tmp.download)}`);
 
-        //tag.push(`${bytesToSize(tmp.upload)}`);
-        //tag.push(`${bytesToSize(tmp.download)}`);
+            tag.push(`${bytesToSize(tmp.download + tmp.upload)}`);
+            tag.push(`${bytesToSize(tmp.total)}`);
 
-        tag.push(`${bytesToSize(tmp.download + tmp.upload)}`);
-        tag.push(`${bytesToSize(tmp.total)}`);
-
-        myResponseList.push(`http=hello:80, username=name, password=pwd, fast-open=false, udp-relay=false, tag=${tag.join('|')}`);
+            myResponseList.push(`http=hello:80, username=name, password=pwd, fast-open=false, udp-relay=false, tag=${tag.join('|')}`);
+        }
     }
 
     myResponse.body = Base64.encode(myResponseList.join('\n'));
     $done(myResponse);
 
 }).catch((error) => {
-    console.log(error)
-    $done();
+    console.log(`Promise.all exception: ${error}`);
+    $done(myResponse);
 });
 
 function bytesToSize(bytes) {
