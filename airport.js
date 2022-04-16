@@ -70,6 +70,7 @@ Promise.all(promises).then((result) => {
                     let total = tmp.total;
                     let percent_amounts = (amounts / total) * 100;
                     let percent_remainder = 100 - percent_amounts;
+                    
                     //屏幕可展示100% 的点数为70点[.]/或者32星[⋆]
                     let dotCount = (percent_remainder * 32) / 100;
                     for (let i = 0; i < dotCount; i++) {
@@ -79,7 +80,7 @@ Promise.all(promises).then((result) => {
                     if (response.style === 'percent') {
                         tag.push(` ${percent_remainder.toFixed(2)}%`);
                     } else {
-                        tag.push(`${bytesToSize(tmp.total - (tmp.download + tmp.upload))}`);
+                        tag.push(` ${bytesToSize(tmp.total - (tmp.download + tmp.upload))}`);
                     }
 
                     separator = '';
