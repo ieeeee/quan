@@ -8,7 +8,7 @@ $prefs.setValueForKey(value, key)
 $prefs.removeValueForKey(key)
 $prefs.removeAllValues()
 ariport format:
-[{'tag':'xx','url':'http://xxx'},{'tag':'xx','url':'http://xxx'}]
+[{'tag':'xx','url':'http://xxx','style': 'text|percent'},{'tag':'xx','url':'http://xxx','style': 'text|percent'}]
 */
 const ariport_config_key = "ariport_amounts_config_key";
 const ariportValue = $prefs.valueForKey(ariport_config_key) || "";
@@ -63,6 +63,7 @@ Promise.all(promises).then((result) => {
             response.style = response.style || 'text';
             switch (response.style) {
                 case "percent":
+                case "percentnum":
                     separator = '';
                     //用量÷总量×100=百分比
                     let amounts = tmp.download + tmp.upload;
@@ -74,7 +75,14 @@ Promise.all(promises).then((result) => {
                     for (let i = 0; i < dotCount; i++) {
                         tag.push(`⋆`);
                     }
-                    tag.push(` ${percent_remainder.toFixed(2)}%`);
+
+                    if (response.style === 'percent') {
+                        tag.push(` ${percent_remainder.toFixed(2)}%`);
+                    } else {
+                        tag.push(`${bytesToSize(tmp.total - (tmp.download + tmp.upload))}`);
+                    }
+
+                    separator = '';
                     break;
                 default:
                     tag.push(`↑${bytesToSize(tmp.upload)}`);
