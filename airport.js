@@ -8,7 +8,7 @@ $prefs.setValueForKey(value, key)
 $prefs.removeValueForKey(key)
 $prefs.removeAllValues()
 ariport format:
-[{'tag':'xx','url':'http://xxx','style': 'text|percent'},{'tag':'xx','url':'http://xxx','style': 'text|percent'}]
+[{'tag':'xx','url':'http://xxx','style': 'text|percent|percentandnum'},{'tag':'xx','url':'http://xxx','style': 'text|percent|percentandnum'}]
 */
 const ariport_config_key = "ariport_amounts_config_key";
 const ariportValue = $prefs.valueForKey(ariport_config_key) || "";
@@ -70,7 +70,7 @@ Promise.all(promises).then((result) => {
                     let total = tmp.total;
                     let percent_amounts = (amounts / total) * 100;
                     let percent_remainder = 100 - percent_amounts;
-                    
+
                     //屏幕可展示100% 的点数为70点[.]/或者32星[⋆]
                     let dotCount = (percent_remainder * 32) / 100;
                     for (let i = 0; i < dotCount; i++) {
@@ -79,6 +79,8 @@ Promise.all(promises).then((result) => {
 
                     if (response.style === 'percent') {
                         tag.push(` ${percent_remainder.toFixed(2)}%`);
+                    } else if (response.style === 'percentandnum') {
+                        tag.push(` ${percent_remainder.toFixed(2)}% [${bytesToSize(tmp.total - (tmp.download + tmp.upload))}] `);
                     } else {
                         tag.push(` ${bytesToSize(tmp.total - (tmp.download + tmp.upload))}`);
                     }
