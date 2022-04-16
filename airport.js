@@ -65,6 +65,7 @@ Promise.all(promises).then((result) => {
                 case "percent":
                 case "percentnum":
                 case "percentandnum":
+                case "percentauto":
                     separator = '';
                     //用量÷总量×100=百分比
                     let amounts = tmp.download + tmp.upload;
@@ -84,8 +85,13 @@ Promise.all(promises).then((result) => {
                         tag.push(` ${bytesToSize(tmp.total - (tmp.download + tmp.upload))}`);
                     } else if (response.style === 'percentandnum') {
                         tag.push(` ${percent_remainder.toFixed(2)}% [${bytesToSize(tmp.total - (tmp.download + tmp.upload))}] `);
-                    } else {
-
+                    } else if (response.style === 'percentauto') {
+                        if (percent_remainder <= 50) {
+                            tag.push(` ${percent_remainder.toFixed(2)}% [${bytesToSize(tmp.total - (tmp.download + tmp.upload))}] `);
+                        }
+                        else {
+                            tag.push(` ${percent_remainder.toFixed(2)}%`);
+                        }
                     }
 
                     separator = '';
