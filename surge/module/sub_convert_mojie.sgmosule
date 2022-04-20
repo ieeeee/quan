@@ -2,8 +2,8 @@
 #!desc=将 魔戒vmess节点订阅转换为surge支持的格式
 
 [Script]
-rewrite_head = type=http-request,pattern=^https://mojie\.link/api/v1/client/subscribe\?token=* script-path=mojie-request-headers.js,requires-body=true
-rewrite_body = type=http-response,pattern=^https://mojie\.link/api/v1/client/subscribe\?token=* script-path=mojie-response-body.js
+rewrite_head = type=http-request,pattern=^https://mojie\.link/api/v1/client/subscribe\?token=* script-path=https://raw.githubusercontent.com/ieeeee/quan/main/surge/rewrite_request_request/mojie-request-headers.js,requires-body=true
+rewrite_body = type=http-response,pattern=^https://mojie\.link/api/v1/client/subscribe\?token=* script-path=https://raw.githubusercontent.com/ieeeee/quan/main/surge/rewrite_response_body/mojie-response-body.js
 
 [MITM]
 hostname = %APPEND% mojie.info
