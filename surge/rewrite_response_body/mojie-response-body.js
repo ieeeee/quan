@@ -1,3 +1,5 @@
+console.log("hitting rewrite body...");
+
 if ($request.headers["User-Agent"].indexOf("Surge") >= 0) {
     const Base64 = new Base64Code();
     const nodeList = Base64.decode($response.body);
@@ -17,14 +19,20 @@ if ($request.headers["User-Agent"].indexOf("Surge") >= 0) {
     //myHeaders['Content-Disposition'] = 'attachment; filename=SurgeList_1650421165.list';
 
     const myData = nodeListArray.join('\n');
+    console.log(myData);
+
     const myResponse = {
         status: 200,
         headers: myHeaders,
         body: myData
     };
+    console.log("hitting rewrite body default");
+
     $done(myResponse);
 }
 else {
+    console.log("hitting rewrite body default");
+
     $done({});
 }
 
