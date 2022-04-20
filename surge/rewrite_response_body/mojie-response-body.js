@@ -1,97 +1,32 @@
-
-/**
- * @fileoverview Example to compose HTTP request
- * and handle the response.
- *
- 
-
-const url = "https://example.com/";
-const method = "POST";
-const headers = {"Field": "test-header-param"};
-const data = {"info": "abc"};
-
-const myRequest = {
-    url: url,
-    method: method, // Optional, default GET.
-    headers: headers, // Optional.
-    body: JSON.stringify(data) // Optional.
-};
-
-$task.fetch(myRequest).then(response => {
-    // response.statusCode, response.headers, response.body
-    console.log(response.body);
-    $notify("Title", "Subtitle", response.body); // Success!
-    $done();
-}, reason => {
-    // reason.error
-    $notify("Title", "Subtitle", reason.error); // Error!
-    $done();
-});
-*/
-
-
-// You can visit through http://quantumult-x:9999/example/v1/ or http://127.0.0.1:9999/example/v1/ or http://localhost:9999/example/v1/
-
-
-// The availabel variables: $request.url, $request.path, $request.headers, $request.body, $prefs, $task, $notify(title, subtitle, message), console.log(message), $done(response)
-
-
-//http://quantumult-x:9999/test/?suburl=asdfghjkl
-
-
-
-
-const url = "c";
-const method = "HEAD";
-
-const myRequest = {
-    url: url,
-    method: method, // Optional, default GET.
-};
-
-
-$task.fetch(myRequest).then(response => {
-    // response.statusCode, response.headers, response.body
-
-    //console.log(JSON.stringify(response));
-
-    // $notify("Title", "Subtitle", ''); // Success!
-    //$done();
-
-    //shadowsocks=k3.7hh7.xyz:41321, method=aes-128-gcm, password=b92946d49005, obfs=http, obfs-host=6573767766736d733a627775.sina.cn, tag=v1|亚洲03|MPTCP|★★☆
-
-    /*{"statusCode":200,"headers":{"Server":"nginx","Content-Type":"application/octet-stream; charset=utf-8","Subscription-Userinfo":"upload=4595409; download=10966755; total=16106127360; expire=1676048405","Connection":"keep-alive","Date":"Fri, 15 Apr 2022 01:20:21 GMT","Content-Disposition":"attachment; filename=QuantumultX_1649985621.txt","Content-Length":"7847","Cache-Control":"no-store, no-cache, must-revalidate","X-Cache-Status":"MISS"}}*/
-
-
-    //vmess=gtm.mj-cn.cyou:16617,method=chacha20-poly1305,password=d83dae3e-c0ec-4aa2-9336-67ae5dd7d04c,fast-open=true,udp-relay=true,tag=日本-智能,obfs=ws
-
-
-    //http=hello:80, username=name, password=pwd, fast-open=false, udp-relay=false, tag=DISABLED-PROXY
+if ($request.headers["User-Agent"].indexOf("Surge") >= 0) {
     const Base64 = new Base64Code();
+    const nodeList = Base64.decode($response.body);
 
+    let nodeListArray = [];
+    nodeListArray = nodeList.split(/\r?\n/).map((element, index) => {
+        if (element) {
+            let tmp = Base64.decode(element.substr(8));
+            tmp = JSON.parse(tmp);
+            return `${tmp.ps}=vmess,${tmp.add},${tmp.port},username=${tmp.id},vmess-aead=true,tfo=true,udp-relay=true,ws=true`;
+        }
+    });
 
+    let myHeaders = $response.headers;
+    myHeaders['Content-Type'] = 'text/plain; charset=utf-8';
+    //myHeaders['Content-Type'] = 'application/octet-stream; charset=utf-8';
+    //myHeaders['Content-Disposition'] = 'attachment; filename=SurgeList_1650421165.list';
 
+    const myData = nodeListArray.join('\n');
     const myResponse = {
-        status: "HTTP/1.1 200 OK",
-        headers: { "Subscription-Userinfo": response.headers["subscription-userinfo"], "Connection": "Close", "Content-Type": "text/html; charset=UTF-8" },
-        body: Base64.encode("vmess=gtm.mj-cn.cyou:16617,method=chacha20-poly1305,password=d83dae3e-c0ec-4aa2-9336-67ae5dd7d04c,fast-open=true,udp-relay=true,tag=日本-智能,obfs=ws")
+        status: 200,
+        headers: myHeaders,
+        body: myData
     };
-
-
-
-    console.log(Base64.decode(myResponse.body));
-
     $done(myResponse);
-
-
-
-}, reason => {
-    // reason.error
-    $notify("Title", "Subtitle", reason.error); // Error!
-    $done();
-});
-
-
+}
+else {
+    $done({});
+}
 
 //比较完美的一款 base64 encode/decode 工具
 /*
