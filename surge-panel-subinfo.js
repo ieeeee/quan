@@ -30,7 +30,13 @@ const promises = ariport.map((item) => {
     // 执行异步请求，返回一个 Promise 对象
     return new Promise((resolve, reject) => {
         try {
-            $httpClient.head(item.url, function (error, resp, data) {
+            let requestOpt = {
+                url: item.url,
+                headers: {
+                    'User-Agent': "Quantumult%20X"
+                },
+            };
+            $httpClient.head(requestOpt, function (error, resp, data) {
                 if (error === null) {
                     let header = Object.keys(resp.headers).find((key) => key.toLowerCase() === "subscription-userinfo");
                     resolve({ 'tag': item.tag, 'style': item.style, 'amounts': (header) ? resp.headers[header] : null });
