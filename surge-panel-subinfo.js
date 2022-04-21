@@ -84,10 +84,10 @@ Promise.all(promises).then((result) => {
                     let percent_amounts = (amounts / total) * 100;
                     let percent_remainder = 100 - percent_amounts;
 
-                    //屏幕可展示100% 的点数为70点[.]/或者32星[⋆]
-                    let dotCount = (percent_remainder * 32) / 100;
+                    //屏幕可展示100% 的点数为55点[.]/或者32星[⋆]
+                    let dotCount = (percent_remainder * 55) / 100;
                     for (let i = 0; i < dotCount; i++) {
-                        tag.push(`⋆`);
+                        tag.push(`.`);
                     }
 
                     if (response.style === 'percent') {
@@ -130,8 +130,8 @@ Promise.all(promises).then((result) => {
 
     $done({
         title: "订阅用量查询",
-        icon: "doc.text.magnifyingglass",
-        'icon-color': "#3498DB",
+        //icon: "doc.text.magnifyingglass",
+        //'icon-color': "#3498DB",
         content: myResponseList.join('\n')
     });
 
@@ -139,8 +139,8 @@ Promise.all(promises).then((result) => {
     console.log(`Promise.all exception: ${error}`);
     $done({
         title: "订阅用量查询",
-        icon: "doc.text.magnifyingglass",
-        'icon-color': "#3498DB",
+        //icon: "doc.text.magnifyingglass",
+        //'icon-color': "#3498DB",
         content: '查询失败...'
     });
 });
