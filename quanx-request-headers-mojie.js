@@ -11,8 +11,8 @@
 var modifiedHeaders = $request.headers;
 
 if ($request.headers["User-Agent"].indexOf("Surge") >= 0) {
-    modifiedHeaders['forSurge'] = '1';
     modifiedHeaders['User-Agent'] = 'Safari';
+    modifiedHeaders['forSurge'] = '1';
 }
 
 $done({ headers: modifiedHeaders });

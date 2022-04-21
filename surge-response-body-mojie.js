@@ -1,6 +1,9 @@
 console.log("hitting rewrite body...");
 
 if ($request.headers["User-Agent"].indexOf("Surge") >= 0) {
+
+    console.log("hitting rewrite body default");
+
     const Base64 = new Base64Code();
     const nodeList = Base64.decode($response.body);
 
@@ -26,13 +29,11 @@ if ($request.headers["User-Agent"].indexOf("Surge") >= 0) {
         headers: myHeaders,
         body: myData
     };
-    console.log("hitting rewrite body default");
 
     $done(myResponse);
 }
 else {
     console.log("hitting rewrite body default");
-
     $done({});
 }
 
@@ -60,21 +61,11 @@ function Base64Code() {
     // encoder stuff
     var cb_utob = function (c) {
         if (c.length < 2) {
-            var cc = c.charCodeAt(0);
-            return cc < 0x80 ? c
-                : cc < 0x800 ? (fromCharCode(0xc0 | (cc >>> 6))
-                    + fromCharCode(0x80 | (cc & 0x3f)))
-                    : (fromCharCode(0xe0 | ((cc >>> 12) & 0x0f))
-                        + fromCharCode(0x80 | ((cc >>> 6) & 0x3f))
-                        + fromCharCode(0x80 | (cc & 0x3f)));
+            let cc = c.charCodeAt(0);
+            return cc < 0x80 ? c : cc < 0x800 ? (fromCharCode(0xc0 | (cc >>> 6)) + fromCharCode(0x80 | (cc & 0x3f))) : (fromCharCode(0xe0 | ((cc >>> 12) & 0x0f)) + fromCharCode(0x80 | ((cc >>> 6) & 0x3f)) + fromCharCode(0x80 | (cc & 0x3f)));
         } else {
-            var cc = 0x10000
-                + (c.charCodeAt(0) - 0xD800) * 0x400
-                + (c.charCodeAt(1) - 0xDC00);
-            return (fromCharCode(0xf0 | ((cc >>> 18) & 0x07))
-                + fromCharCode(0x80 | ((cc >>> 12) & 0x3f))
-                + fromCharCode(0x80 | ((cc >>> 6) & 0x3f))
-                + fromCharCode(0x80 | (cc & 0x3f)));
+            let cc = 0x10000 + (c.charCodeAt(0) - 0xD800) * 0x400 + (c.charCodeAt(1) - 0xDC00);
+            return (fromCharCode(0xf0 | ((cc >>> 18) & 0x07)) + fromCharCode(0x80 | ((cc >>> 12) & 0x3f)) + fromCharCode(0x80 | ((cc >>> 6) & 0x3f)) + fromCharCode(0x80 | (cc & 0x3f)));
         }
     };
     var re_utob = /[\uD800-\uDBFF][\uDC00-\uDFFFF]|[^\x00-\x7F]/g;
@@ -106,15 +97,14 @@ function Base64Code() {
         var isUint8Array = Object.prototype.toString.call(u) === '[object Uint8Array]';
         return isUint8Array ? u.toString('base64')
             : btoa(utob(String(u)));
-    }
+    };
     var uriencode = function (u, urisafe) {
-        return !urisafe
-            ? _encode(u)
+        return !urisafe ? _encode(u)
             : _encode(String(u)).replace(/[+\/]/g, function (m0) {
                 return m0 == '+' ? '-' : '_';
             }).replace(/=/g, '');
     };
-    var encodeURI = function (u) { return uriencode(u, true) };
+    var encodeURI = function (u) { return uriencode(u, true); };
     // decoder stuff
     var re_btou = /[\xC0-\xDF][\x80-\xBF]|[\xE0-\xEF][\x80-\xBF]{2}|[\xF0-\xF7][\x80-\xBF]{3}/g;
     var cb_btou = function (cccc) {
@@ -125,8 +115,7 @@ function Base64Code() {
                     | ((0x3f & cccc.charCodeAt(2)) << 6)
                     | (0x3f & cccc.charCodeAt(3)),
                     offset = cp - 0x10000;
-                return (fromCharCode((offset >>> 10) + 0xD800)
-                    + fromCharCode((offset & 0x3FF) + 0xDC00));
+                return (fromCharCode((offset >>> 10) + 0xD800) + fromCharCode((offset & 0x3FF) + 0xDC00));
             case 3:
                 return fromCharCode(
                     ((0x0f & cccc.charCodeAt(0)) << 12)
@@ -176,11 +165,12 @@ function Base64Code() {
     //  }
     //  : function(a) { return btou(_atob(a)) };
     var _decode = function (u) {
-        return btou(_atob(u))
-    }
+        return btou(_atob(u));
+    };
+
     this.decode = function (a) {
         return _decode(
-            String(a).replace(/[-_]/g, function (m0) { return m0 == '-' ? '+' : '/' })
+            String(a).replace(/[-_]/g, function (m0) { return m0 == '-' ? '+' : '/'; })
                 .replace(/[^A-Za-z0-9\+\/]/g, '')
         ).replace(/&gt;/g, ">").replace(/&lt;/g, "<");
     };
