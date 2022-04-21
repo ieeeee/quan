@@ -3,8 +3,8 @@
 #!doc=https://manual.nssurge.com/others/panel.html
 
 [Panel]
-;PanelA = title="用量展示",content="Panel Content\nSecondLine\nSecondLine\nSecondLine\nSecondLine\nSecondLine",style=info
-PanelB = title="用量展示",content="Panel Content\nSecondLine",script-name=panel-subinfo
+;PanelA = title="用量展示",content="静态面板展示内容",style=info
+PanelB = title="用量展示",content="用量查询初始化...",script-name=panel-subinfo
 
 [Script]
 panel-subinfo = script-path=https://raw.githubusercontent.com/ieeeee/quan/main/surge-panel-subinfo.js,type=generic
