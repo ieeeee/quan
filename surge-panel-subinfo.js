@@ -130,6 +130,8 @@ Promise.all(promises).then((result) => {
 
     $done({
         title: "订阅用量查询",
+        icon: "doc.text.magnifyingglass",
+        'icon-color': "#3498DB",
         content: myResponseList.join('\n')
     });
 
@@ -137,6 +139,8 @@ Promise.all(promises).then((result) => {
     console.log(`Promise.all exception: ${error}`);
     $done({
         title: "订阅用量查询",
+        icon: "doc.text.magnifyingglass",
+        'icon-color': "#3498DB",
         content: '查询失败...'
     });
 });
