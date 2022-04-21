@@ -1,6 +1,7 @@
 console.log("hitting rewrite body...");
+console.log(JSON.stringify($request.headers));
 
-if ($request.headers["User-Agent"].indexOf("Surge") >= 0) {
+if ($request.headers["User-Agent"].indexOf("Safari") >= 0) {
 
     console.log("hitting rewrite body default");
 
