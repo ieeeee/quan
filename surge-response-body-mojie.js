@@ -3,7 +3,7 @@ console.log(JSON.stringify($request.headers));
 
 if ($request.headers["User-Agent"].indexOf("Safari") >= 0) {
 
-    console.log("hitting rewrite body default");
+    console.log("hitting rewrite body rewirte");
 
     const Base64 = new Base64Code();
     const nodeList = Base64.decode($response.body);
