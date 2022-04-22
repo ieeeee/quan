@@ -132,7 +132,7 @@ Promise.all(promises).then((result) => {
         title: "订阅用量查询",
         //icon: "doc.text.magnifyingglass",
         //'icon-color': "#3498DB",
-        content: myResponseList.join('\n')
+        content: myResponseList.join('\n\n')
     });
 
 }).catch((error) => {
