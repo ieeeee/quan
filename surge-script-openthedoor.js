@@ -61,9 +61,14 @@ let opener = {
       that.myRequest.body = { commandId: commandId };
       try {
         $httpClient.get(that.myRequest, function (error, response, data) {
+          console.log(`查询开门结果error => ${JSON.stringify(error)}`);
+          console.log(`查询开门结果response => ${JSON.stringify(response)}`);
+          console.log(`查询开门结果data => ${JSON.stringify(data)}`);
+
           resolve({ error: error, response: response, data: data });
         });
       } catch (errormsg) {
+        console.log("查询开门结果catch => ${JSON.stringify(errormsg)}");
         reject(errormsg);
       }
     });
@@ -126,6 +131,9 @@ let opener = {
         }
       })
       .catch((error) => {
+        that.wait(1000).then(() => {
+          that.queryOpenStatus2(commandId);
+        });
         $done({ status: "查询开门结果：reject" });
       })
       .finally(function () {
