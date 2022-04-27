@@ -105,7 +105,7 @@ let opener = {
     that
       .getOpenStatus(commandId)
       .then((res) => {
-        if (res.data) {
+        if (res.data.seccess) {
           $notification.post("开门", "查询开门结果", "开门脚本执行 成功");
           console.log(`状态已更新 => [${JSON.stingify(res)}]`);
           $done({ status: "开门脚本执行成功" });
