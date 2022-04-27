@@ -60,15 +60,14 @@ let opener = {
       that.myRequest.url = myRequest.url + "-result";
       that.myRequest.body = { commandId: commandId };
       try {
-        $httpClient.get(that.myRequest, function (error, response, data) {
+        $httpClient.post(that.myRequest, function (error, response, data) {
           console.log(`查询开门结果error => ${JSON.stringify(error)}`);
           console.log(`查询开门结果response => ${JSON.stringify(response)}`);
           console.log(`查询开门结果data => ${JSON.stringify(data)}`);
-
-          resolve({ error: error, response: response, data: data });
+          resolve({ error: error, response: response, data: JSON.parse(data) });
         });
       } catch (errormsg) {
-        console.log("查询开门结果catch => ${JSON.stringify(errormsg)}");
+        console.log(`查询开门结果catch => ${JSON.stringify(errormsg)}`);
         reject(errormsg);
       }
     });
@@ -105,7 +104,7 @@ let opener = {
     that
       .getOpenStatus(commandId)
       .then((res) => {
-        if (res.data.seccess) {
+        if (res.data.success) {
           $notification.post("开门", "查询开门结果", "开门脚本执行 成功");
           console.log(`状态已更新 => [${JSON.stingify(res)}]`);
           $done({ status: "开门脚本执行成功" });

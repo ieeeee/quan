@@ -2,18 +2,26 @@ let opener = {
   waitMaxTimes: 10,
   waitCounts: 1,
   myRequest: {},
+  timer: [],
   wait: function (ms) {
+    var that = this;
     return new Promise((resolve, reject) => {
-      setTimeout(resolve, 1000);
+      let t = setTimeout(resolve, 1000);
+      that.timer.push(t);
     });
+  },
+  clearWaitTimer: function () {
+    var that = this;
+    that.timer.forEach((element) => {
+      clearTimeout(element);
+    });
+    that.timer = [];
   },
   open: function () {
     var that = this;
     new Promise((resolve, reject) => {
       $httpClient.post(that.myRequest, function (error, response, data) {
-console.log(
-              `开门指令结果 => [${JSON.stringify(data)}]`
-            );
+        console.log(`开门指令结果 => [${JSON.stringify(data)}]`);
         let result = { code: 0, message: "", data: null };
         if (error === null && response.status === 200) {
           let openResult = JSON.parse(data);
@@ -22,7 +30,6 @@ console.log(
             result.message = `request error openResult invalid => ${JSON.stringify(
               openResult
             )}`;
-
             reject(result);
           } else {
             that.queryOpenStatus2(openResult.id);
@@ -61,17 +68,22 @@ console.log(
   getOpenStatus: function (commandId) {
     var that = this;
     return new Promise((resolve, reject) => {
-      that.myRequest.url = "https://lggafw.com/v1.5/spmj/door/open-door-result";
-      that.myRequest.body = JSON.stringify({ "commandId": commandId });
-      
-        $httpClient.post(that.myRequest, function (error, response, data) {
+      let fetchStatusRequest = {
+        url: "https://lggafw.com/v1.5/spmj/door/open-door-result",
+        body: JSON.stringify({ commandId: commandId }),
+        headers: that.myRequest.headers,
+      };
+      try {
+        $httpClient.post(fetchStatusRequest, function (error, response, data) {
           console.log(`查询开门结果error => ${JSON.stringify(error)}`);
           console.log(`查询开门结果response => ${JSON.stringify(response)}`);
           console.log(`查询开门结果data => ${JSON.stringify(data)}`);
-
           resolve({ error: error, response: response, data: JSON.parse(data) });
         });
-      
+      } catch (error) {
+        console.log(`查询开门结果try-catch => ${JSON.stringify(error)}`);
+        reject(error);
+      }
     });
   },
   queryOpenStatus: function (commandId, rad) {
@@ -106,9 +118,13 @@ console.log(
     that
       .getOpenStatus(commandId)
       .then((res) => {
-        if (res.data.success) {
+        if (
+          res.error === null &&
+          res.response.status === 200 &&
+          res.data.success
+        ) {
           $notification.post("开门", "查询开门结果", "开门脚本执行 成功");
-          console.log(`状态已更新 => [${JSON.stingify(res)}]`);
+          console.log(`状态已更新 => [${JSON.stringify(res)}]`);
           $done({ status: "开门脚本执行成功" });
         } else {
           if (that.waitCounts >= that.waitMaxTimes) {
@@ -132,13 +148,10 @@ console.log(
         }
       })
       .catch((error) => {
+        console.log(`getOpenStatus.reject => [${JSON.stringify(error)}]`);
         that.wait(1000).then(() => {
           that.queryOpenStatus2(commandId);
         });
-console.log(
-              `catcherror => [${JSON.stringify(error)}]`
-            );
-        //$done({ status: "查询开门结果：reject" });
       })
       .finally(function () {
         that.waitCounts++;
