@@ -47,14 +47,24 @@ const promises = ariport.map((item) => {
         method: "HEAD"
     };
 
+    $.get(myRequest, function (err, resp, body) { 
+        if (err) {
+            $.log(`[${item.tag}]获取用量信息异常...`);
+            return null;
+        } else { 
+            let header = Object.keys(resp.headers).find((key) => key.toLowerCase() === "subscription-userinfo");
+            return { 'tag': item.tag, 'style': item.style, 'amounts': (header) ? resp.headers[header] : null };
+        }
+    });
+
     // 执行异步请求，返回一个 Promise 对象
-    return $task.fetch(myRequest).then(resp => {
+    /*return $task.fetch(myRequest).then(resp => {
         let header = Object.keys(resp.headers).find((key) => key.toLowerCase() === "subscription-userinfo");
         return { 'tag': item.tag, 'style': item.style, 'amounts': (header) ? resp.headers[header] : null };
     }, reason => {
         $.log(`[${item.tag}]获取用量信息异常...`);
         return null;
-    });
+    });*/
 });
 
 Promise.all(promises).then((result) => {
