@@ -47,13 +47,26 @@ const promises = ariport.map((item) => {
         method: "HEAD"
     };
 
-    $.get(myRequest, function (err, resp, body) { 
-        if (err === null) {
-            let header = Object.keys(resp.headers).find((key) => key.toLowerCase() === "subscription-userinfo");
-            return { 'tag': item.tag, 'style': item.style, 'amounts': (header) ? resp.headers[header] : null };
-        } else { 
-            $.log(`[${item.tag}]获取用量信息异常...`);
-            return null;
+    if ($.isSurge()) { 
+        myRequest.headers = {
+            'User-Agent': "Quantumult%20X"
+        };
+    }
+
+    return new Promise((resolve, reject) => {
+        try {
+            $.get(myRequest, function (err, resp, body) {
+                if (err === null) {
+                    let header = Object.keys(resp.headers).find((key) => key.toLowerCase() === "subscription-userinfo");
+                    resolve({ 'tag': item.tag, 'style': item.style, 'amounts': (header) ? resp.headers[header] : null });
+                } else {
+                    $.log(`[${item.tag}]获取用量信息异常...`);
+                    resolve(null);
+                }
+            });
+        } catch (error) {
+            $.log(`[${item.tag}]用量信息查询出错...`);
+            resolve(null);
         }
     });
 
