@@ -141,11 +141,21 @@ Promise.all(promises).then((result) => {
                     //tag.push(`${bytesToSize(tmp.total)}`);
                     break;
             }
-            myResponseList.push(`http=hello:80, username=name, password=pwd, fast-open=false, udp-relay=false, tag=${tag.join(separator)}`);
+            if ($.isSurge()) {
+                //surge格式
+                //ProxyHTTP = http, 1.2.3.4, 443, username, password
+                myResponseList.push(`${tag.join(separator)} = http, hello, 443, username, password`);
+            } else {
+                //quanx格式
+                myResponseList.push(`http=hello:80, username=name, password=pwd, fast-open=false, udp-relay=false, tag=${tag.join(separator)}`);
+            }
         }
     }
-
-    myResponse.body = Base64.encode(myResponseList.join('\n'));
+    if ($.isQuanX) {
+        myResponse.body = Base64.encode(myResponseList.join('\n'));
+    } else { 
+        myResponse.body = myResponseList.join('\n');
+    }
     $.done(myResponse);
 
 }).catch((error) => {
