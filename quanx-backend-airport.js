@@ -38,7 +38,7 @@ const promises = ariport.map((item) => {
 
 const myResponse = {
     status: "HTTP/1.1 200 OK",
-    headers: { "Connection": "Close", "Content-Type": "text/html; charset=UTF-8" }
+    headers: { "Connection": "Close", "Content-Type": "text/html; charset=UTF-8","Subscription-Userinfo":"upload=0;download=1073741824;total=1073741824;expire=4102415999" }
 };
 
 Promise.all(promises).then((result) => {
