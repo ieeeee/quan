@@ -48,12 +48,12 @@ const promises = ariport.map((item) => {
     };
 
     $.get(myRequest, function (err, resp, body) { 
-        if (err) {
-            $.log(`[${item.tag}]获取用量信息异常...`);
-            return null;
-        } else { 
+        if (err === null) {
             let header = Object.keys(resp.headers).find((key) => key.toLowerCase() === "subscription-userinfo");
             return { 'tag': item.tag, 'style': item.style, 'amounts': (header) ? resp.headers[header] : null };
+        } else { 
+            $.log(`[${item.tag}]获取用量信息异常...`);
+            return null;
         }
     });
 
