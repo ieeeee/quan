@@ -3,13 +3,13 @@
   "name": "@ieeeee 的应用订阅",
   "author": "@ieeeee",
   "icon": "https://i.imgur.com/WaeiWpk.jpg",
-  "repo": "https://github.com/ieeeee/quan/boxjs",
+  "repo": "https://github.com/ieeeee/quan/tree/main/boxjs",
   "apps": [
     {
       "id": "ieeeee.usage_query",
       "name": "用量查询",
       "descs_html": [
-        "<a href=\"https://github.com/ieeeee/quan/boxjs\">查看文档</a>",
+        "<a href=\"https://github.com/ieeeee/quan/tree/main/boxjs\">查看文档</a>",
         "<a onClick=\"window.location.reload(true);\">刷新</a>"
       ],
       "keys": [
@@ -18,7 +18,7 @@
         "@ieeeee.usage_query.subscribe"
       ],
       "author": "@ieeeee",
-      "repo": "https://github.com/ieeeee/quan/boxjs",
+      "repo": "https://github.com/ieeeee/quan/tree/main/boxjs",
       "settings": [
         {
           "id": "@ieeeee.usage_query.disabled",
@@ -35,23 +35,23 @@
           "items": [
             {
               "key": "text",
-              "label": "机场tag➤ • ↑37.77 MB • ↓5.22 GB • 20GB"
+              "label": "机场➤ • ↑37.77 MB • ↓5.22 GB • 20GB"
             },
             {
               "key": "percent",
-              "label": "机场tag➤ ⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆ 100%"
+              "label": "机场➤ ⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆ 100%"
             },
             {
               "key": "percentnum",
-              "label": "机场tag➤ ⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆ 30 GB"
+              "label": "机场➤ ⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆⋆ 30 GB"
             },
             {
               "key": "percentandnum",
-              "label": "机场tag➤ ⋆⋆⋆⋆⋆⋆⋆⋆ 50% [10 GB]"
+              "label": "机场➤ ⋆⋆⋆⋆⋆⋆⋆⋆ 50% [10 GB]"
             },
             {
               "key": "percentauto",
-              "label": "自动切换percent与percentandnum"
+              "label": "自动切换 100% 与 50% [10 GB]"
             }
           ],
           "desc": "默认使用 text"
