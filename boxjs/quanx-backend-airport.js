@@ -156,7 +156,13 @@ Promise.all(promises).then((result) => {
         $.log(myResponse);
     $.done(myResponse);
     } else {
-        $.done({ response: { status: 200, {'Content-Type': 'text/plain;charset=UTF-8'}, body: myResponseList.join('\n') } });
+        let headers = {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'POST,GET,OPTIONS,PUT,DELETE',
+      'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
+      'Content-Type': 'text/plain;charset=UTF-8'
+    };
+        $.done({ response: { status: 200, headers:headers, body: myResponseList.join('\n') } });
     }
     
 
