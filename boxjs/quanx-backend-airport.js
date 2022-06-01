@@ -156,12 +156,14 @@ Promise.all(promises).then((result) => {
         $.log(myResponse);
     $.done(myResponse);
     } else { 
-        myResponse.body = myResponseList.join('\n');
-        let myHeaders = $response.headers;
-    myHeaders['Content-Type'] = 'text/plain; charset=utf-8';
+        //myResponse.body = myResponseList.join('\n');
+        //let myHeaders = $response.headers;
+    //myHeaders['Content-Type'] = 'text/plain; charset=utf-8';
         const mysResponse = {
         status: 200,
-        headers: myHeaders,
+        headers: {
+    'Content-Type': 'text/plain;charset=UTF-8'
+  },
         body: myResponseList.join('\n')
     };
         
