@@ -163,7 +163,7 @@ Promise.all(promises).then((result) => {
        
         body: myResponseList.join('\n')
     };
-$.log(mysResponse);
+$.log(JSON.stringify(mysResponse));
     $.done(mysResponse);
     }
     
