@@ -160,11 +160,7 @@ Promise.all(promises).then((result) => {
         let myHeaders = $.response.headers;
     myHeaders['Content-Type'] = 'text/plain; charset=utf-8';
         
-        const mysResponse = {
-        status: 200,
-        headers: myHeaders,
-        body: myResponseList.join('\n')
-    };
+        const mysResponse = { response: { status: 200, myHeaders, body: myResponseList.join('\n') } }
 $.log(JSON.stringify(mysResponse));
     $.done(mysResponse);
     }
