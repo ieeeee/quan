@@ -155,20 +155,8 @@ Promise.all(promises).then((result) => {
         myResponse.body = Base64.encode(myResponseList.join('\n'));
         $.log(myResponse);
     $.done(myResponse);
-    } else { 
-        //myResponse.body = myResponseList.join('\n');
-        //let myHeaders = $response.headers;
-    //myHeaders['Content-Type'] = 'text/plain; charset=utf-8';
-        const mysResponse = {
-        status: 200,
-        headers: {
-    'Content-Type': 'text/plain;charset=UTF-8'
-  },
-        body: myResponseList.join('\n')
-    };
-        
-$.log(JSON.stringify(mysResponse));
-    $.done(mysResponse);
+    } else {
+        $.done({ response: { status: 200, {'Content-Type': 'text/plain;charset=UTF-8'}, body: myResponseList.join('\n') } });
     }
     
 
