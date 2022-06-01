@@ -151,11 +151,12 @@ Promise.all(promises).then((result) => {
             }
         }
     }
-    if ($.isQuanX) {
+    if ($.isQuanX()) {
         myResponse.body = Base64.encode(myResponseList.join('\n'));
     } else { 
         myResponse.body = myResponseList.join('\n');
     }
+    $.log(myResponse);
     $.done(myResponse);
 
 }).catch((error) => {
