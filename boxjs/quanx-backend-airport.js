@@ -153,11 +153,20 @@ Promise.all(promises).then((result) => {
     }
     if ($.isQuanX()) {
         myResponse.body = Base64.encode(myResponseList.join('\n'));
+        $.log(myResponse);
+    $.done(myResponse);
     } else { 
         myResponse.body = myResponseList.join('\n');
+        
+        const mysResponse = {
+        status: 200,
+       
+        body: myResponseList.join('\n')
+    };
+$.log(mysResponse);
+    $.done(mysResponse);
     }
-    $.log(myResponse);
-    $.done(myResponse);
+    
 
 }).catch((error) => {
     let msg = `Promise.all exception: ${error}`;
