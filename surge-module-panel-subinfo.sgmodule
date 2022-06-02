@@ -1,5 +1,5 @@
-#!name=节点用量
-#!desc=查询机场订阅展示用量信息
+#!name=用量查询
+#!desc=查询机场用量信息[surge panel]
 #!doc=https://manual.nssurge.com/others/panel.html
 
 [Panel]
