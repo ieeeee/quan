@@ -1,5 +1,5 @@
 #!name=用量查询
-#!desc=查询机场订阅展示用量信息
+#!desc=查询机场用量信息[节点列表展示]
 #!doc=https://manual.nssurge.com/scripting/http-request.html
 
 [Script]
