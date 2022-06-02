@@ -1,5 +1,5 @@
 #!name=用量查询
-#!desc=查询机场用量信息[surge panel]
+#!desc=查询机场用量信息[Surge面板展示]
 #!doc=https://manual.nssurge.com/others/panel.html
 
 [Panel]
