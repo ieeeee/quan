@@ -128,9 +128,10 @@ Promise.all(promises).then((result) => {
     }
     if($request.headers["User-Agent"].indexOf("Quantumult") >= 0) {
         myResponse.body = Base64.encode(myResponseList.join('\n'));
-        if($.isQuanX()){
-        $.done(myResponse);}else{
-        $.done({ response: myResponse});
+        if($.isSurge()){
+            $.done({ response: myResponse});
+        }else{
+            $.done(myResponse);
         }
     } else {
         let headers = {
