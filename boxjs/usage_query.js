@@ -126,7 +126,7 @@ Promise.all(promises).then((result) => {
             }
         }
     }
-    if ($.isQuanX()) {
+    if ($.isQuanX() || $request.headers["User-Agent"].indexOf("Quantumult") >= 0) {
         myResponse.body = Base64.encode(myResponseList.join('\n'));
         $.done(myResponse);
     } else {
