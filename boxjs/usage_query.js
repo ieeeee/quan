@@ -119,7 +119,7 @@ Promise.all(promises).then((result) => {
                     tag.push(`${bytesToSize(tmp.total - (tmp.download + tmp.upload))}`);
                     break;
             }
-            if ($.isSurge()) {
+            if($request.headers["User-Agent"].indexOf("Surge") >= 0) {
                 myResponseList.push(`${tag.join(separator)} = http, hello, 443, username, password`);
             } else {
                 myResponseList.push(`http=hello:80, username=name, password=pwd, fast-open=false, udp-relay=false, tag=${tag.join(separator)}`);
