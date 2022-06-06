@@ -126,20 +126,22 @@ Promise.all(promises).then((result) => {
             }
         }
     }
-    if($request.headers["User-Agent"].indexOf("Quantumult") >= 0) {
-        myResponse.body = Base64.encode(myResponseList.join('\n'));
-        if($.isSurge()){
-            $.done({ response: myResponse});
-        }else{
-            $.done(myResponse);
-        }
-    } else {
-        let headers = {
+    
+    let headers = {
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods': 'POST,GET,OPTIONS,PUT,DELETE',
             'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
             'Content-Type': 'text/plain;charset=UTF-8'
         };
+    
+    if($request.headers["User-Agent"].indexOf("Quantumult") >= 0) {
+        myResponse.body = Base64.encode(myResponseList.join('\n'));
+        if($.isSurge()){
+            $.done({ response: { status: 200, headers: headers, body: myResponse.body } });
+        }else{
+            $.done(myResponse);
+        }
+    } else {
         $.done({ response: { status: 200, headers: headers, body: myResponseList.join('\n') } });
     }
 
