@@ -126,9 +126,12 @@ Promise.all(promises).then((result) => {
             }
         }
     }
-    if ($.isQuanX() || $request.headers["User-Agent"].indexOf("Quantumult") >= 0) {
+    if($request.headers["User-Agent"].indexOf("Quantumult") >= 0) {
         myResponse.body = Base64.encode(myResponseList.join('\n'));
-        $.done(myResponse);
+        if($.isQuanX()){
+        $.done(myResponse);}else{
+        $.done({ response: myResponse});
+        }
     } else {
         let headers = {
             'Access-Control-Allow-Origin': '*',
