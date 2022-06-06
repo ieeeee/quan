@@ -137,6 +137,7 @@ Promise.all(promises).then((result) => {
     if($request.headers["User-Agent"].indexOf("Quantumult") >= 0) {
         myResponse.body = Base64.encode(myResponseList.join('\n'));
         if($.isSurge()){
+            headers["Content-Type"]="text/html; charset=UTF-8";
             $.done({ response: { status: 200, headers: headers, body: myResponse.body } });
         }else{
             $.done(myResponse);
