@@ -119,27 +119,27 @@ Promise.all(promises).then((result) => {
                     tag.push(`${bytesToSize(tmp.total - (tmp.download + tmp.upload))}`);
                     break;
             }
-            if($request.headers["User-Agent"].indexOf("Surge") >= 0) {
+            if ($request.headers["User-Agent"].indexOf("Surge") >= 0) {
                 myResponseList.push(`${tag.join(separator)} = http, hello, 443, username, password`);
             } else {
                 myResponseList.push(`http=hello:80, username=name, password=pwd, fast-open=false, udp-relay=false, tag=${tag.join(separator)}`);
             }
         }
     }
-    
+
     let headers = {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'POST,GET,OPTIONS,PUT,DELETE',
-            'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
-            'Content-Type': 'text/plain;charset=UTF-8'
-        };
-    
-    if($request.headers["User-Agent"].indexOf("Quantumult") >= 0) {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'POST,GET,OPTIONS,PUT,DELETE',
+        'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
+        'Content-Type': 'text/plain;charset=UTF-8'
+    };
+
+    if ($request.headers["User-Agent"].indexOf("Quantumult") >= 0) {
         myResponse.body = Base64.encode(myResponseList.join('\n'));
-        if($.isSurge()){
-            headers["Content-Type"]="text/html; charset=UTF-8";
+        if ($.isSurge()) {
+            headers["Content-Type"] = "text/html; charset=UTF-8";
             $.done({ response: { status: 200, headers: headers, body: myResponse.body } });
-        }else{
+        } else {
             $.done(myResponse);
         }
     } else {

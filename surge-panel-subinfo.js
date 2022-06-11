@@ -135,7 +135,8 @@ Promise.all(promises).then((result) => {
 });
 
 function bytesToSize(bytes) {
-    if (bytes === 0) return "0B";
+    $.log(`======>bytesToSize:${bytes}`);
+    if (bytes <= 0) return "0B";
     let k = 1024;
     sizes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
     let i = Math.floor(Math.log(bytes) / Math.log(k));
