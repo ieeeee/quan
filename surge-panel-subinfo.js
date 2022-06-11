@@ -67,7 +67,7 @@ Promise.all(promises).then((result) => {
             );
 
             let tag = [];
-            let separator = ' • ';
+            let separator = ' ';
             tag.push(response.tag + '➤ ');
 
             response.style = response.style || 'text';
