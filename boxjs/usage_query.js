@@ -33,7 +33,7 @@ const promises = ariport.map((item) => {
 
     const myRequest = {
         url: item.url,
-        method: "GET"
+        method: "HEAD"
     };
 
     if ($.isSurge()) {
