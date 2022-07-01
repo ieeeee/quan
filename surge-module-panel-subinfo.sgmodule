@@ -7,6 +7,3 @@ panel-subinfo = title="用量展示",content="用量查询初始化...",script-n
 
 [Script]
 panel-subinfo = script-path=https://raw.githubusercontent.com/ieeeee/quan/main/surge-panel-subinfo.js,type=generic
-
-[MITM]
-hostname = %APPEND% mojie.link,subscribe.v4590.top
