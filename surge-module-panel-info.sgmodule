@@ -33,4 +33,4 @@ TrafficStatistics = type=generic,timeout=10,script-path=https://raw.githubuserco
 
 #策略组面板 可重复配置 注意修改相应字段
 #必须更改的字段：group 填写需要显示的策略组名称
-groupPanel = type=generic,timeout=10,script-path=https://raw.githubusercontent.com/ieeeee/quan/main/surge-panel-network-group.js ,argument=icon=network&color=#86abee&group=Master
+groupPanel = type=generic,timeout=10,script-path=https://raw.githubusercontent.com/ieeeee/quan/main/surge-panel-network-group.js ,argument=icon=network&color=#86abee&group=PROXY
