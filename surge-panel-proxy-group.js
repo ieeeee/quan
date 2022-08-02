@@ -44,7 +44,7 @@ index += 1;
 if(index>arr.length-1){
 	index = 0;
 	}
-$surge.setSelectGroupPolicy(group, proxyName[index]);
+//$surge.setSelectGroupPolicy(group, proxyName[index]);
 
 };
 
