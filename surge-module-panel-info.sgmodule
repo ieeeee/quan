@@ -4,10 +4,10 @@
 
 [Panel]
 #启动时间
-启动时间 = script-name=启动时间,update-interval=1
+#启动时间 = script-name=启动时间,update-interval=1
 
 #策略组面板 可重复配置 注意修改相应字段
-groupPanel= script-name=groupPanel,update-interval=5
+#groupPanel= script-name=groupPanel,update-interval=5
 
 #Netflix检测
 #Netflix检测 = script-name=Netflix检测, title="Netflix 解锁检测", content="请刷新", update-interval=1
@@ -16,18 +16,18 @@ groupPanel= script-name=groupPanel,update-interval=5
 #TrafficStatistics = script-name=TrafficStatistics,update-interval=1
 
 #网络信息
-网络信息 = script-name=网络信息, title="网络信息", content="请刷新", style=info, update-interval=1
+#网络信息 = script-name=网络信息, title="网络信息", content="请刷新", style=info, update-interval=1
 
 #订阅用量查询
 panel-subinfo = title="用量展示",content="用量查询初始化...",script-name=panel-subinfo,update-interval=7200
 
 [Script]
 #启动时间
-启动时间 = type=generic,timeout=10,script-path=https://raw.githubusercontent.com/ieeeee/quan/main/surge-panel-traffic.js ,argument=icon=crown.fill&color=#f6c970
+#启动时间 = type=generic,timeout=10,script-path=https://raw.githubusercontent.com/ieeeee/quan/main/surge-panel-traffic.js ,argument=icon=crown.fill&color=#f6c970
 
 #策略组面板 可重复配置 注意修改相应字段
 #必须更改的字段：group 填写需要显示的策略组名称
-groupPanel = type=generic,timeout=10,script-path=https://raw.githubusercontent.com/ieeeee/quan/main/surge-panel-proxy-group.js ,argument=icon=network&color=#86abee&group=PROXY
+#groupPanel = type=generic,timeout=10,script-path=https://raw.githubusercontent.com/ieeeee/quan/main/surge-panel-proxy-group.js ,argument=icon=network&color=#86abee&group=PROXY
 
 #Netflix检测
 #Netflix检测 = type=generic, script-path=https://raw.githubusercontent.com/ieeeee/quan/main/surge-panel-netflix-check.js, argument=title=Netflix 解锁检测
@@ -36,7 +36,7 @@ groupPanel = type=generic,timeout=10,script-path=https://raw.githubusercontent.c
 #TrafficStatistics = type=generic,timeout=10,script-path=https://raw.githubusercontent.com/ieeeee/quan/main/surge-panel-trafficstatistics.js ,argument=icon=arrow.up.arrow.down.circle&color=#5d84f8
 
 #网络信息
-网络信息 = type=generic, script-path=https://raw.githubusercontent.com/ieeeee/quan/main/surge-panel-network-check.js, argument=title=Netflix 解锁检测
+#网络信息 = type=generic, script-path=https://raw.githubusercontent.com/ieeeee/quan/main/surge-panel-network-check.js, argument=title=Netflix 解锁检测
 
 #订阅用量查询
 panel-subinfo = script-path=https://raw.githubusercontent.com/ieeeee/quan/main/surge-panel-subinfo.js,type=generic
