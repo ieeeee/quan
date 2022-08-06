@@ -1,2 +1,6 @@
+#!name=配置微调
+#!desc= General geoip-maxmind-url
+#!system=ios
+
 [General]
 geoip-maxmind-url = https://cdn.jsdelivr.net/gh/Hackl0us/GeoIP2-CN@release/Country.mmdb

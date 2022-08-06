@@ -1,2 +1,6 @@
+#!name=配置微调
+#!desc= General ipv6
+#!system=ios
+
 [General]
 ipv6 = true

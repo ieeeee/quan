@@ -1,2 +1,6 @@
+#!name=配置微调
+#!desc= General Wi-Fi
+#!system=ios
+
 [General]
 allow-wifi-access = false
