@@ -1,3 +1,6 @@
+#!name=DDNS域名解析
+#!desc=当前处于本地局域网环境时，将DDNS域名直接解析本地
+#!system=ios
 
 [Host]
 *.clli.fun = script:DDNS-LOCAL
