@@ -1,21 +1,35 @@
-/*
-ddns 
-
-[Host]
-*.itunes.apple.com = script:Dnspod
-[Script]
-Dnspod = type=dns,script-path=https://raw.githubusercontent.com/Gx3dong/Surge/master/JS/dnspod.js,script-update-interval=-1
-*/
-
-const url = 'http://119.29.29.29/d?dn=' + $domain;
-if ($network.v4.primaryInterface === 'en0') {
-  $httpClient.get(url, function(error, response, data) {
-    if (error) {
-      $done({server: '8.8.8.8'});
-    } else {
-      $done({addresses: data.split(';'), ttl: 600});
+/*$network = {
+    "cellular-data": {
+        "carrier": "460-11",
+        "radio": "NR"
+    },
+    "wifi": {
+        "bssid": null,
+        "ssid": null
+    },
+    "v4": {
+        "primaryAddress": "",
+        "primaryRouter": "",
+        "primaryInterface": ""
+    },
+    "dns": [
+        "240e:1f:1::1",
+        "240e:1f:1::33",
+        "202.96.128.86",
+        "202.96.134.133"
+    ],
+    "v6": {
+        "primaryAddress": "",
+        "primaryInterface": ""
     }
-  });
-} else {
-  $done({server: '8.8.8.8'});
+}*/
+
+if ($network.wifi.ssid && $network.wifi.ssid === 'MyNetwork5') {
+    $done({ addresses: '192.168.50.109', ttl: 600 });
 }
+else {
+    // Fallback to standard DND query
+    $done({});
+}
+
+
