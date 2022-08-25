@@ -1,7 +1,8 @@
+let authInfo = JSON.parse($persistentStore.read("openthedoor_headers_config_key"));
 let opener = {
   waitMaxTimes: 10,
   waitCounts: 1,
-  myRequest: {},
+  myRequest: authInfo,
   timer: [],
   wait: function (ms) {
     var that = this;
