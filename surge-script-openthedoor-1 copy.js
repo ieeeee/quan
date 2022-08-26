@@ -1,14 +1,22 @@
 let authInfo = JSON.parse($persistentStore.read("openthedoor_headers_config_key"));
-
 let opener = {
   waitMaxTimes: 10,
   waitCounts: 1,
   myRequest: authInfo,
+  timer: [],
   wait: function (ms) {
     var that = this;
     return new Promise((resolve, reject) => {
       let t = setTimeout(resolve, 1000);
+      that.timer.push(t);
     });
+  },
+  clearWaitTimer: function () {
+    var that = this;
+    that.timer.forEach((element) => {
+      clearTimeout(element);
+    });
+    that.timer = [];
   },
   open: function () {
     var that = this;
@@ -25,7 +33,7 @@ let opener = {
             )}`;
             reject(result);
           } else {
-            that.queryOpenStatus(openResult.id);
+            that.queryOpenStatus2(openResult.id);
             resolve(result);
           }
         } else {
@@ -62,14 +70,14 @@ let opener = {
     var that = this;
     return new Promise((resolve, reject) => {
       let fetchStatusRequest = {
-        url: that.myRequest.url + "-result",
+        url: "https://lggafw.com/v1.5/spmj/door/open-door-result",
         body: JSON.stringify({ commandId: commandId }),
         headers: that.myRequest.headers,
       };
       try {
         $httpClient.post(fetchStatusRequest, function (error, response, data) {
-          //console.log(`查询开门结果error => ${JSON.stringify(error)}`);
-          //console.log(`查询开门结果response => ${JSON.stringify(response)}`);
+          console.log(`查询开门结果error => ${JSON.stringify(error)}`);
+          console.log(`查询开门结果response => ${JSON.stringify(response)}`);
           console.log(`查询开门结果data => ${JSON.stringify(data)}`);
           resolve({ error: error, response: response, data: JSON.parse(data) });
         });
@@ -79,7 +87,34 @@ let opener = {
       }
     });
   },
-  queryOpenStatus: function (commandId) {
+  queryOpenStatus: function (commandId, rad) {
+    var that = this;
+
+    return that.getOpenStatus(commandId).then((res) => {
+      console.log(`queryOpenStatus~${that.waitMaxTimes}`);
+      if (that.waitMaxTimes === rad) {
+        res.data.success = true;
+      }
+      if (
+        res.error === null &&
+        res.response.status === 200 &&
+        res.data.success
+      ) {
+        return 1;
+      } else {
+        if (that.waitMaxTimes < 10) {
+          that.wait(1000).then((result) => {
+            console.log(`testWait times [${that.waitMaxTimes++}]`);
+            return that.queryOpenStatus(commandId, rad);
+          });
+        } else {
+          console.log(`run testWait times already max [${that.waitMaxTimes}]`);
+          return 0;
+        }
+      }
+    });
+  },
+  queryOpenStatus2: function (commandId) {
     var that = this;
     that
       .getOpenStatus(commandId)
@@ -122,7 +157,19 @@ let opener = {
       .finally(function () {
         that.waitCounts++;
       });
-  }
+  },
+  testWait: function (commandId) {
+    var that = this;
+    if (that.waitMaxTimes < 10) {
+      that.wait(1000).then((result) => {
+        console.log(`testWait times [${that.waitMaxTimes++}]`);
+        that.testWait(commandId);
+      });
+    } else {
+      console.log(`run testWait times already max [${that.waitMaxTimes}]`);
+      $done();
+    }
+  },
 };
 
 opener.open();
