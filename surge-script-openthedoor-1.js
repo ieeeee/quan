@@ -116,7 +116,7 @@ let opener = {
       .catch((error) => {
         console.log(`getOpenStatus.reject => [${JSON.stringify(error)}]`);
         that.wait(1000).then(() => {
-          that.queryOpenStatus2(commandId);
+          that.queryOpenStatus(commandId);
         });
       })
       .finally(function () {
