@@ -108,7 +108,7 @@ let opener = {
               `状态未更新 => [${that.waitCounts}/${that.waitMaxTimes}]`
             );
             that.wait(1000).then(() => {
-              that.queryOpenStatus2(commandId);
+              that.queryOpenStatus(commandId);
             });
           }
         }
