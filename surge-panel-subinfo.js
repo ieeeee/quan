@@ -15,8 +15,14 @@ const subscribeList = $.getdata(KEY_SUBSCRIBE) || '';
 //const ariport = JSON.parse(ariportValue) || [];
 const ariportSrc = subscribeList.match(/.*\|.*/g);
 if (!ariportSrc) {
-    $.msg('用量查询', '异常', '为获取到正确的订阅配置信息');
-    $.done(myResponse);
+    $.msg('用量查询', '异常', '未获取到正确的订阅配置信息');
+    $.done({
+        title: "订阅用量查询",
+        //icon: "doc.text.magnifyingglass",
+        //'icon-color': "#3498DB",
+        'style': "error",
+        content: '查询失败...'
+    });
 }
 
 const ariport = ariportSrc.map((item) => item.split("|")).map(([k, v]) => { return { "tag": k, "url": v, "style": showStyle }; });
