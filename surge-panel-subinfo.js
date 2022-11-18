@@ -15,13 +15,13 @@ const subscribeList = $.getdata(KEY_SUBSCRIBE) || '';
 //const ariport = JSON.parse(ariportValue) || [];
 const ariportSrc = subscribeList.match(/.*\|.*/g);
 if (!ariportSrc) {
-    $.msg('用量查询', '异常', '未获取到正确的订阅配置信息');
+    //$.msg('用量查询', '异常', '未获取到正确的订阅配置信息');
     $.done({
-        title: "订阅用量查询",
+        title: "用量查询异常",
         //icon: "doc.text.magnifyingglass",
         //'icon-color': "#3498DB",
-        'style': "error",
-        content: '查询失败...'
+        style: "error",
+        content: '未获取到正确的订阅配置信息...'
     });
 }
 
