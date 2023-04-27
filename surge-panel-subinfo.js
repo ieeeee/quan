@@ -64,7 +64,7 @@ Promise.all(promises).then((result) => {
 
     // 遍历所有请求的响应结果
     for (let response of result) {
-        if (response) {
+        if (response && response.amounts) {
             let tmp = Object.fromEntries(
                 response.amounts
                     .match(/\w+=[\d.eE+]+/g)
