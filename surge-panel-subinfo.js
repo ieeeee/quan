@@ -120,7 +120,11 @@ Promise.all(promises).then((result) => {
             }
 
             myResponseList.push(`${tag.join(separator)}`);
-            myResponseList.push(`${new Date(tmp.expire*1000).toLocaleDateString()}`);
+            if(tmp.expire){
+            	myResponseList.push(`过期:${new Date(tmp.expire*1000).toLocaleDateString()}`);
+            }else{
+            	myResponseList.push(`过期:永久有效`);
+            }
         }
     }
 
