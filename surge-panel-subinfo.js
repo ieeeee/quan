@@ -120,6 +120,7 @@ Promise.all(promises).then((result) => {
             }
 
             myResponseList.push(`${tag.join(separator)}`);
+            myResponseList.push(`\n\n${new Date(tmp.expire*1000).toLocaleDateString()}`);
         }
     }
 
