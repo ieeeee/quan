@@ -16,6 +16,11 @@ let authInfo = {
     "timeout": 5
 };
 
+//获取限制参数1开启显示；0关闭限制
+//从快捷指令获取
+let SETTING_SWITCH = $intent.parameter;
+//从surge配置获取$argument
+
 let RTAC88U = {
     myRequest: authInfo,
     loginAndSetting: function () {
@@ -25,15 +30,21 @@ let RTAC88U = {
                 let result = { code: 0, message: "", data: null };
                 if (error === null && response.status === 200) {
                     //获取asus_token
-                    let asusToken = response.headers["asus_token"];
+                    console.log(`response.headers=${JSON.stringify(response.headers)}`);
+                    let headerOfResponseCookies = Object.keys(response.headers).find((key) => key === "Set-Cookie");
+                    let cookieObj = Object.fromEntries(
+                        response.headers[headerOfResponseCookies]
+                            .match(/\w+=\w+/g)
+                            .map((item) => item.split("="))
+                            .map(([k, v]) => [k, v]));
+                    let asusToken = cookieObj.asus_token;
+                    console.log(`asusToken=${asusToken}`);
                     if (!asusToken) {
                         result.code = -2;
-                        result.message = `request error asus_token invalid => ${JSON.stringify(
-                            asusToken
-                        )}`;
+                        result.message = `request error asus_token invalid => ${JSON.stringify(asusToken)}`;
                         reject(result);
                     } else {
-                        that.setParentalControl(asusToken, true);
+                        that.setParentalControl(asusToken, SETTING_SWITCH === 1);
                         resolve(result);
                     }
                 } else {
@@ -89,14 +100,18 @@ let RTAC88U = {
                 "Upgrade-Insecure-Requests": "1",
                 "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
             },
-            "data": `productid=RT-AC88U&current_page=ParentalControl.asp&next_page=&modified=0&action_wait=5&action_mode=apply&action_script=restart_firewall&firmver=3.0.0.4&MULTIFILTER_ALL=1&MULTIFILTER_ENABLE=${MULTIFILTER_ENABLE}&MULTIFILTER_MAC=3A%3AB8%3A08%3A71%3A25%3A51%3EC4%3A12%3A34%3AD8%3A17%3AAD%3E90%3A32%3A4B%3A7E%3A88%3AB9&MULTIFILTER_DEVICENAME=3A%3AB8%3A08%3A71%3A25%3A51%3EiPadmini6%3ESonyTv&MULTIFILTER_MACFILTER_DAYTIME_V2=%3E%3E&system_time=Mon%2C+Jan+01+19%3A10%3A09+2024&PC_mac=`
+            "body": `productid=RT-AC88U&current_page=ParentalControl.asp&next_page=&modified=0&action_wait=5&action_mode=apply&action_script=restart_firewall&firmver=3.0.0.4&MULTIFILTER_ALL=1&MULTIFILTER_ENABLE=${MULTIFILTER_ENABLE}&MULTIFILTER_MAC=3A%3AB8%3A08%3A71%3A25%3A51%3EC4%3A12%3A34%3AD8%3A17%3AAD%3E90%3A32%3A4B%3A7E%3A88%3AB9&MULTIFILTER_DEVICENAME=3A%3AB8%3A08%3A71%3A25%3A51%3EiPadmini6%3ESonyTv&MULTIFILTER_MACFILTER_DAYTIME_V2=%3E%3E&system_time=Mon%2C+Jan+01+19%3A10%3A09+2024&PC_mac=`
         };
         try {
             $httpClient.post(fetchStatusRequest, function (error, response, data) {
-                console.log(`配置家长控制结果data => ${JSON.stringify(response.status)}`);
+                console.log(`配置家长控制结果data => ${JSON.stringify(data)}`);
+                $notification.post("RT-AC88U", "家长模式", `家长模式已 ${settingSwitch ? '开启' : '关闭'}`);
+                //console.log(`配置家长控制结果status => ${JSON.stringify(response.status)}`);
             });
         } catch (error) {
             console.log(`配置家长控制结果try-catch => ${JSON.stringify(error)}`);
+        } finally {
+            $done();
         }
     }
 };
