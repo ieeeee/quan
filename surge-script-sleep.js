@@ -44,7 +44,7 @@ let RTAC88U = {
                         result.message = `request error asus_token invalid => ${JSON.stringify(asusToken)}`;
                         reject(result);
                     } else {
-                        that.setParentalControl(asusToken, SETTING_SWITCH === 1);
+                        that.setParentalControl(asusToken, SETTING_SWITCH == 1);
                         resolve(result);
                     }
                 } else {
