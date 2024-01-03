@@ -1,3 +1,11 @@
+//获取限制参数1开启显示；0关闭限制
+//从快捷指令获取
+let shortCutParams = $intent.parameter;
+//从surge配置获取$argument
+
+let SETTING_SWITCH = shortCutParams.split('|')[0];
+let LOGIN_AUTHORIZATION = shortCutParams.split('|')[1];
+
 let authInfo = {
     "url": "http://router.dsm.local/login.cgi",
     "headers": {
@@ -12,14 +20,9 @@ let authInfo = {
         "Upgrade-Insecure-Requests": "1",
         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
     },
-    "body": "group_id=&action_mode=&action_script=&action_wait=5&current_page=Main_Login.asp&next_page=index.asp&login_authorization=bXlydDo0b2I3RXNoVHZ5S1VnSEI%3D&login_captcha=",
+    "body": `group_id=&action_mode=&action_script=&action_wait=5&current_page=Main_Login.asp&next_page=index.asp&login_authorization=${LOGIN_AUTHORIZATION}&login_captcha=`,
     "timeout": 5
 };
-
-//获取限制参数1开启显示；0关闭限制
-//从快捷指令获取
-let SETTING_SWITCH = $intent.parameter;
-//从surge配置获取$argument
 
 let RTAC88U = {
     myRequest: authInfo,
