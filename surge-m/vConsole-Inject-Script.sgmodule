@@ -1,0 +1,11 @@
+#!name=vConsole 注入 (Script)
+#!desc=通过 http-response 脚本向指定 HTML 页面注入 vConsole。需开启 MITM 主开关并信任 CA 证书。script_url 需替换为你自己托管 vconsole-inject.js 的地址（或改成 Surge 配置目录下的相对路径）。
+#!category=开发调试
+#!arguments=url_pattern=^https?://([^/]+\.)?example\.com/&mitm_hostname=*.example.com&script_url=vconsole-inject.js&cdn=https://unpkg.com/vconsole@3.15.1/dist/vconsole.min.js
+#!arguments-desc=url_pattern: 生效页面的 URL 正则\nmitm_hostname: 需要 MITM 解密的域名\nscript_url: vconsole-inject.js 的 URL 或相对路径\ncdn: vConsole 的 CDN 地址
+
+[MITM]
+hostname = %APPEND% %mitm_hostname%
+
+[Script]
+vconsole-inject = type=http-response,pattern=%url_pattern%,requires-body=true,max-size=5242880,script-path=%script_url%,script-update-interval=0,engine=webview,timeout=10,debug=true,argument=cdn=%cdn%
