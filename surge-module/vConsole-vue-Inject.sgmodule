@@ -1,7 +1,7 @@
 #!name=vConsole 注入
 #!desc=向指定网页注入 vConsole 调试面板，可选加载 Vue Devtools 插件。需开启 MITM 总开关并信任 CA 证书。
 #!category=开发调试
-#!arguments=HOSTNAME:www.example.com,PATHPREFIX:/,CDN:https://unpkg.com/vconsole@latest/dist/vconsole.min.js,VUEPLUGIN:https://cdn.jsdelivr.net/npm/vue-vconsole-devtools@1.0.5/dist/vue_plugin.js
+#!arguments=HOSTNAME:www.example.com,PATHPREFIX:/,CDN:https://unpkg.com/vconsole@latest/dist/vconsole.min.js,VUEPLUGIN:
 #!arguments-desc=[参数设置]\n\n⓵ HOSTNAME: 需要注入的域名，会自动加入 MITM 列表。\n\n⓶ PATHPREFIX: 页面路径前缀，如 /mobile/ 。留空表示该域名下所有页面。\n\n⓷ CDN: vConsole 的地址，默认 latest。内网环境可换成自建地址。\n\n⓸ VUEPLUGIN: 可选。Vue Devtools 插件地址，留空则不加载。\n开启请填：https://cdn.jsdelivr.net/npm/vue-vconsole-devtools@1.0.5/dist/vue_plugin.js\n\n[注意事项]\n参数值中不能包含英文逗号，否则会被当成分隔符。
 #!requirement=CORE_VERSION>=20
 
