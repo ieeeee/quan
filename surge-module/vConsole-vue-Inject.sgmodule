@@ -1,0 +1,34 @@
+#!name=vConsole 注入
+#!desc=向指定网页注入 vConsole 调试面板，可选加载 Vue Devtools 插件。需开启 MITM 总开关并信任 CA 证书。
+#!category=开发调试
+#!arguments=HOSTNAME:www.example.com,PATHPREFIX:,CDN:https://unpkg.com/vconsole@latest/dist/vconsole.min.js,VUEPLUGIN:
+#!arguments-desc=[参数设置]\n\n⓵ HOSTNAME: 需要注入的域名，会自动加入 MITM 列表。\n\n⓶ PATHPREFIX: 页面路径前缀，如 /mobile/ 。留空表示该域名下所有页面。\n\n⓷ CDN: vConsole 的地址，默认 latest。内网环境可换成自建地址。\n\n⓸ VUEPLUGIN: 可选。Vue Devtools 插件地址，留空则不加载。\n开启请填：https://cdn.jsdelivr.net/npm/vue-vconsole-devtools@1.0.5/dist/vue_plugin.js\n\n[注意事项]\n参数值中不能包含英文逗号，否则会被当成分隔符。
+#!requirement=CORE_VERSION>=20
+
+[MITM]
+hostname = %APPEND% {{{HOSTNAME}}}
+
+# 去掉 CSP，否则页面可能拒绝加载外部 CDN 的脚本
+[Header Rewrite]
+http-response ^https://{{{HOSTNAME}}}{{{PATHPREFIX}}} header-del Content-Security-Policy
+http-response ^https://{{{HOSTNAME}}}{{{PATHPREFIX}}} header-del Content-Security-Policy-Report-Only
+
+# Body Rewrite 的参数以空格分隔，替换内容中不能出现任何空格，
+# 因此 JS 片段做了 percent-encoding，由 decodeURIComponent 在页面内还原；
+# 两个 URL 参数本身不含空格，拆成字符串拼接以便占位符替换。
+#
+# 解码后的实际逻辑：
+#   (function(){
+#     var d=document, c="{{{CDN}}}", v="{{{VUEPLUGIN}}}";
+#     function L(u,f){var s=d.createElement("script");s.src=u;s.onload=f;d.head.appendChild(s)}
+#     L(c,function(){
+#       window.vConsole=new window.VConsole();
+#       if(v){L(v,function(){
+#         var D=window.vueVconsoleDevtools;
+#         if(D&&D.default){D=D.default}
+#         if(D&&D.initPlugin){D.initPlugin(window.vConsole)}
+#       })}
+#     })
+#   })()
+[Body Rewrite]
+http-response ^https://{{{HOSTNAME}}}{{{PATHPREFIX}}}[^.?]*(\.html?)?(\?|$) </head> <script>document.write(decodeURIComponent('%3Cscript%3E(function()%7Bvar%20d%3Ddocument%2Cc%3D%22')+'{{{CDN}}}'+decodeURIComponent('%22%2Cv%3D%22')+'{{{VUEPLUGIN}}}'+decodeURIComponent('%22%3Bfunction%20L(u%2Cf)%7Bvar%20s%3Dd.createElement(%22script%22)%3Bs.src%3Du%3Bs.onload%3Df%3Bd.head.appendChild(s)%7DL(c%2Cfunction()%7Bwindow.vConsole%3Dnew%20window.VConsole()%3Bif(v)%7BL(v%2Cfunction()%7Bvar%20D%3Dwindow.vueVconsoleDevtools%3Bif(D%26%26D.default)%7BD%3DD.default%7Dif(D%26%26D.initPlugin)%7BD.initPlugin(window.vConsole)%7D%7D)%7D%7D)%7D)()%3C%2Fscript%3E'))</script></head>
