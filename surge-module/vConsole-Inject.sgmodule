@@ -1,0 +1,23 @@
+#!name=vConsole 注入
+#!desc=向指定网页注入 vConsole 调试面板。需开启 MITM 总开关并信任 CA 证书。
+#!category=开发调试
+#!arguments=HOSTNAME:erp-test.it.aisuan.cn,PATHPREFIX:/mobile/,CDN:https://unpkg.com/vconsole@3.15.1/dist/vconsole.min.js
+#!arguments-desc=[参数设置]\n\n⓵ HOSTNAME: 需要注入的域名,会自动加入 MITM 列表。\n\n⓶ PATHPREFIX: 页面路径前缀,如 /mobile/ ,注意首尾的斜杠。\n\n⓷ CDN: vConsole 的 CDN 地址,内网环境可换成自建地址。\n\n[注意事项]\n参数值中不能包含英文逗号,否则会被当成分隔符。
+#!requirement=CORE_VERSION>=20
+
+[MITM]
+hostname = %APPEND% {{{HOSTNAME}}}
+
+# 去掉 CSP，否则页面可能拒绝加载外部 CDN 的 vConsole
+[Header Rewrite]
+http-response ^https://{{{HOSTNAME}}}{{{PATHPREFIX}}} header-del Content-Security-Policy
+http-response ^https://{{{HOSTNAME}}}{{{PATHPREFIX}}} header-del Content-Security-Policy-Report-Only
+
+# Body Rewrite 的参数以空格分隔，替换内容中不能出现任何空格，
+# 因此 HTML 片段做了 percent-encoding，由 decodeURIComponent 在页面内还原；
+# CDN 地址本身不含空格，所以拆成字符串拼接，方便参数替换。
+# 最终写入页面的内容为：
+#   <script src="{{{CDN}}}"></script>
+#   <script>window.vConsole=new window.VConsole()</script>
+[Body Rewrite]
+http-response ^https://{{{HOSTNAME}}}{{{PATHPREFIX}}}(index\.html)?($|\?) </head> <script>document.write(decodeURIComponent('%3Cscript%20src%3D%22')+'{{{CDN}}}'+decodeURIComponent('%22%3E%3C%2Fscript%3E%3Cscript%3Ewindow.vConsole%3Dnew%20window.VConsole()%3C%2Fscript%3E'))</script></head>
