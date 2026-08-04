@@ -1,23 +1,20 @@
-#!name=vConsole 注入 (Body Rewrite)
-#!desc=向指定网页注入 vConsole 调试面板。需开启 MITM 主开关并信任 CA 证书。参数 url_pattern 为生效页面的 URL 正则，mitm_hostname 为需要解密的域名。
+#!name=vConsole 注入 - ERP Mobile
+#!desc=向 https://erp-test.it.aisuan.cn/mobile/ 注入 vConsole 调试面板。需开启 MITM 主开关并信任 CA 证书。
 #!category=开发调试
 #!requirement=CORE_VERSION>=20
-#!arguments=url_pattern=^https://erp-test\.it\.aisuan\.cn/mobile/
-#!arguments=mitm_hostname=*.aisuan.cn
-#!arguments-desc=url_pattern: 生效页面的 URL 正则\nmitm_hostname: 需要 MITM 解密的域名（支持通配符）
 
 [MITM]
-hostname = %APPEND% %mitm_hostname%
+hostname = %APPEND% erp-test.it.aisuan.cn
 
 # 去掉 CSP，否则页面可能拒绝加载外部 CDN 的 vConsole
 [Header Rewrite]
-http-response %url_pattern% header-del Content-Security-Policy
-http-response %url_pattern% header-del Content-Security-Policy-Report-Only
+http-response ^https://erp-test\.it\.aisuan\.cn/mobile/ header-del Content-Security-Policy
+http-response ^https://erp-test\.it\.aisuan\.cn/mobile/ header-del Content-Security-Policy-Report-Only
 
 # Body Rewrite 的参数以空格分隔，替换内容中不能出现空格，
-# 因此这里把真实的注入代码做了 percent-encoding，由 decodeURIComponent 还原。
+# 因此注入代码做了 percent-encoding，由 decodeURIComponent 在页面内还原。
 # 解码后的内容为：
 #   <script src="https://unpkg.com/vconsole@3.15.1/dist/vconsole.min.js"></script>
 #   <script>window.vConsole=new window.VConsole()</script>
 [Body Rewrite]
-http-response %url_pattern% </head> <script>document.write(decodeURIComponent('%3Cscript%20src%3D%22https%3A%2F%2Funpkg.com%2Fvconsole%403.15.1%2Fdist%2Fvconsole.min.js%22%3E%3C%2Fscript%3E%3Cscript%3Ewindow.vConsole%3Dnew%20window.VConsole()%3C%2Fscript%3E'))</script></head>
+http-response ^https://erp-test\.it\.aisuan\.cn/mobile/(index\.html)?($|\?) </head> <script>document.write(decodeURIComponent('%3Cscript%20src%3D%22https%3A%2F%2Funpkg.com%2Fvconsole%403.15.1%2Fdist%2Fvconsole.min.js%22%3E%3C%2Fscript%3E%3Cscript%3Ewindow.vConsole%3Dnew%20window.VConsole()%3C%2Fscript%3E'))</script></head>
