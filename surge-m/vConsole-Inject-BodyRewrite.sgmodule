@@ -2,7 +2,8 @@
 #!desc=向指定网页注入 vConsole 调试面板。需开启 MITM 主开关并信任 CA 证书。参数 url_pattern 为生效页面的 URL 正则，mitm_hostname 为需要解密的域名。
 #!category=开发调试
 #!requirement=CORE_VERSION>=20
-#!arguments=url_pattern=^https?://([^/]+\.)?example\.com/&mitm_hostname=*.example.com
+#!arguments=url_pattern=^https://([^/]+\.)?aisuan\.cn/mobile/
+#!arguments=mitm_hostname=*.aisuan.cn
 #!arguments-desc=url_pattern: 生效页面的 URL 正则\nmitm_hostname: 需要 MITM 解密的域名（支持通配符）
 
 [MITM]
