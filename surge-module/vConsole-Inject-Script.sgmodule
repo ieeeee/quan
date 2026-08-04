@@ -1,0 +1,11 @@
+#!name=vConsole 注入 (Script)
+#!desc=通过 http-response 脚本向指定 HTML 页面注入 vConsole。需开启 MITM 总开关并信任 CA 证书。
+#!category=开发调试
+#!arguments=HOSTNAME:erp-test.it.aisuan.cn,PATHPREFIX:/mobile/,CDN:https://unpkg.com/vconsole@3.15.1/dist/vconsole.min.js,SCRIPTURL:vconsole-inject.js
+#!arguments-desc=[参数设置]\n\n⓵ HOSTNAME: 需要注入的域名,会自动加入 MITM 列表。\n\n⓶ PATHPREFIX: 页面路径前缀,如 /mobile/ 。\n\n⓷ CDN: vConsole 的 CDN 地址。\n\n⓸ SCRIPTURL: vconsole-inject.js 的托管地址,也可填 Surge 配置目录下的相对路径。\n\n[注意事项]\n参数值中不能包含英文逗号,否则会被当成分隔符。
+
+[MITM]
+hostname = %APPEND% {{{HOSTNAME}}}
+
+[Script]
+vconsole-inject = type=http-response,pattern=^https://{{{HOSTNAME}}}{{{PATHPREFIX}}},requires-body=true,max-size=5242880,script-path={{{SCRIPTURL}}},script-update-interval=0,engine=webview,timeout=10,debug=true,argument=cdn={{{CDN}}}
